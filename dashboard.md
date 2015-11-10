@@ -3,17 +3,23 @@ layout: page
 title: Dashboard
 permalink: /dashboard/
 ---
+This dashboard primarily lists data resources that are centrally important for digital biblical humanities and available now. Unless otherwise stated, they provide their data under open licenses. There are multiple versions of some of these resources, we attempt to point to the best authoritative source.
 
-This dashboard lists resources that are available now, under
-construction, or needed.
+If you believe a resource should be added to this page, please contact us (see the bottom of any page on this site for contact information).
 
-The resources on this page are openly licensed, are provided in text
-formats, and can be found in public source code control systems.
 
 ### Base texts
 
-- *Byzantine Text*
-  - [byztxt.com](http://www.byztxt.com/downloads.html): !!! Find me morphologically tagged, please !!!
+- *Nestle 1904 Greek New Testament*
+  - [Diego Santos](https://sites.google.com/site/nestle1904/faq) (.odt, .pdf): Text of the Nestle 1904 Greek New Testament. Used in morphologically tagged texts and treebanks listed below. Not under source code control.
+- *SBL Greek New Testament*
+  - [SBLGNT](http://sblgnt.com/) (XML, OSIS, text, several other formats): High quality critical text created by Logos Software and the Society of Biblical Literature. Note the [license](http://sblgnt.com/license/), which imposes conditions on downstream works that use it.
+- *Greek New Testament - Byzantine Text*
+  - [byztxt.com](http://www.byztxt.com/downloads.html): Robinson-Pierpoint Byzantine text, a Majority Text.
+- *Swete's Septuagint*
+  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/septuagint-dev) Machine-corrected version of Swetes Septuagint.
+- *Migne's Patrologia Graeca*
+  - [OpenGreekAndLatin](https://github.com/OGL-PatrologiaGraecaDev)  Massive collection of Church Fathers. See description on [Wikipedia](https://en.wikipedia.org/wiki/Patrologia_Graeca).
 
 ### Morphologically Tagged Texts
 
@@ -23,8 +29,13 @@ formats, and can be found in public source code control systems.
   - [MorphGNT](https://github.com/morphgnt/sblgnt) (Plain text in columns):  SBLGNT, done by MorphGNT, the first initiative to produce truly open high quality morphologies for the Greek New Testament.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
-- *Septuagint (LXX)*  
-  - []() (http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not openly licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt).
+- *Rahlf's Septuagint*  
+  - [CCAT LXX](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not freely licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt) and [this user agreement](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-user-declaration.txt).
+  - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
+- *Swete's Septuagint*
+  - An openly licensed morphologically tagged Swete's Septuagint is under development.  Contact [James Tauber](mailto:jtauber@jtauber.com) for details.
+- *Cramer's Catenae*
+  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/catenae-dev) (XML): For each verse, lists any comments that the early Fathers made on that verse.
 
 ### Treebanks
 
@@ -37,44 +48,19 @@ formats, and can be found in public source code control systems.
 - *Tischendorff Greek New Testament*
    - [PROIEL](https://github.com/proiel/proiel-treebank) (XML): High quality dependency trees in an eclectic and expressive format. Part of a parallel corpus of old Indo-European Bible translations, including Greek, Armenian, Gothic, Old Church Slavonic, and Latin.
 
-#### Septuagint
-
-#### Hebrew Old Testament
-
 ### Lexicons
 
-https://github.com/translatable-exegetical-tools/Abbott-Smith
-https://github.com/biblicalhumanities/Dodson-Greek-Lexicon
-https://github.com/morphgnt/strongs-dictionary-xml
+- *Abbott-Smith*
+  - [Translatable Exegetical Tools](https://github.com/translatable-exegetical-tools/Abbott-Smith) (TEI XML): Probably the best quality lexicon in the public domain.
+- *Dodson*
+  - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
+- *Strong's Dictionary*
+  - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
 
-#### Greek New Testament
-#### Hebrew Old Testament
+### Commentaries, Secondary Literature, and Miscellaneous Resources
 
-### OCR Repositories
-
-
-### XML Texts
-
-https://sites.tufts.edu/perseusupdates/2015/08/07/open-patrologia-graeca-1-0/
-https://github.com/OpenGreekAndLatin
-http://heml.mta.ca/lace/catalog
-
-
-https://github.com/OpenGreekAndLatin/catenae-dev (Cramer)
-https://github.com/OpenGreekAndLatin/septuagint-dev (Swete)
-https://github.com/OpenGreekAndLatin/csel-dev (Latin Church Fathers)
-https://github.com/OpenGreekAndLatin/patrologia_latina-dev
-https://github.com/OpenGreekAndLatin/church_fathers-dev
-
-### Tools
-
-https://sites.tufts.edu/perseusupdates/2014/09/19/announcing-the-arethusa-annotation-framework/
-
-### Greek OCR
-
-https://sites.tufts.edu/perseusupdates/2014/05/02/new-version-of-ancient-greek-ocr-released/
-
-
-### Commentaries
-
-### Discussion Forums
+- *Lace*
+  - [Lace](http://heml.mta.ca/lace/catalog)(hOCR): Contains a massive number of Greek texts in hOCR format, including several scholarly commentaries on the Greek text of each New Testament book, Septuagint resources, Cramer's Catenae, Migne, the Sophocles lexicon, and many other resources that are just begging for the community to adopt and do manual editing.
+- *Bible Support*
+  - [Bible Support](http://www.biblesupport.com/e-sword-downloads/) (e-Sword modules): Contains some very useful [commentaries](http://www.biblesupport.com/e-sword-downloads/category/3-commentaries/)
+  and [dictionaries](http://www.biblesupport.com/e-sword-downloads/category/7-dictionaries/).
