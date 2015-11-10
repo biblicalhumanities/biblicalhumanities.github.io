@@ -1,0 +1,12 @@
+# Site settings
+title: biblicalhumanities.org
+email: jonathan.robie@biblicalhumanities.org
+description: > # this means to ignore newlines until "baseurl:"
+     Open digital resources for biblical studies.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://biblicalhumanities.github.io" # the base hostname & protocol for your site
+twitter_username: bibhumanities
+github_username:  biblicalhumanities
+
+# Build settings
+markdown: kramdown
