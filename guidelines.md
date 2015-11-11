@@ -13,5 +13,5 @@ We promote the following guidelines for resources in digital biblical humanities
 - Designed to be used collaboratively with other resources.
 - Uses existing standards like TEI, Epidoc, and OSIS when they are a good match for the domain.
 
-We are now beginning to negotiate standards to improve interoperability among resources.  Check out [https://github.com/biblicalhumanities/standards]([https://github.com/biblicalhumanities/standards), and come talk to us on [https://biblicalhumanities.slack.com/messages/standards/](https://biblicalhumanities.slack.com/messages/standards/).
+We are now beginning to negotiate standards to improve interoperability among resources.  Check out [https://github.com/biblicalhumanities/standards](https://github.com/biblicalhumanities/standards), and come talk to us on [https://biblicalhumanities.slack.com/messages/standards/](https://biblicalhumanities.slack.com/messages/standards/).
 
