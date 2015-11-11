@@ -20,6 +20,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/septuagint-dev) Machine-corrected version of Swetes Septuagint.
 - *Migne's Patrologia Graeca*
   - [OpenGreekAndLatin](https://github.com/OGL-PatrologiaGraecaDev)  Massive collection of Church Fathers. See description on [Wikipedia](https://en.wikipedia.org/wiki/Patrologia_Graeca).
+- *Cramer's Catenae*
+  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/catenae-dev) (XML): For each verse, lists any comments that the early Fathers made on that verse.
 
 ### Morphologically Tagged Texts
 
@@ -34,8 +36,7 @@ If you believe a resource should be added to this page, please contact us (see t
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
 - *Swete's Septuagint*
   - An openly licensed morphologically tagged Swete's Septuagint is under development.  Contact [James Tauber](mailto:jtauber@jtauber.com) for details.
-- *Cramer's Catenae*
-  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/catenae-dev) (XML): For each verse, lists any comments that the early Fathers made on that verse.
+
 
 ### Treebanks
 
@@ -57,7 +58,7 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Strong's Dictionary*
   - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
 
-### Commentaries, Secondary Literature, and Miscellaneous Resources
+### Commentaries, Secondary Literature, and Other Resources
 
 - *Lace*
   - [Lace](http://heml.mta.ca/lace/catalog)(hOCR): Contains a massive number of Greek texts in hOCR format, including several scholarly commentaries on the Greek text of each New Testament book, Septuagint resources, Cramer's Catenae, Migne, the Sophocles lexicon, and many other resources that are just begging for the community to adopt and do manual editing.
