@@ -18,7 +18,7 @@ These are the current members of the Technical Advisory Board:
 - Jonathan Robie <jonathan.robie@biblicalhumanities.org>
 - Randall Tan <randall.tan@globalbibleinitiative.org>
 - Patrick Durusau <patrick@durusau.net>
-- Paul O'Rear <paul_orear@wycliffe.org>
+- Paul O'Rear <paul_orear@sil.org>
 - Micheal Palmer <mwpalmer@greek-language.com>
-- Ulrik Sandborg-Pedersen <ulrikp@hum.aau.dk>
+- Ulrik Sandborg-Petersen <ulrikp@hum.aau.dk>
 - James Tauber <jtauber@jtauber.com>
