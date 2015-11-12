@@ -35,6 +35,7 @@ In addition, we sponsor two online forums for discussing biblical languages:
 - Gregory Crane <gregory.crane@tufts.edu>, Perseus Project / [University of Leipzig](http://www.dh.uni-leipzig.de/wo/)
 - Harry Diakoff <harry.diakoff@gmail.com>,  [Alpheios](http://perseids.org)
 - Bruce Robertson <broberts@mta.ca>, Mount Allison University - Greek OCR, [Lace](http://heml.mta.ca/lace/catalog)
+- Dirk Roorda <dirk.roorda@dans.knaw.nl>, [Shebanq](https://shebanq.ancient-data.org/), [Data Archiving and Networked Services (DANS)](www.dans.knaw.nl).
 - Nicolai Winther-Nielsen <nwn@dbi.edu>, Dansk Bible Institut, Bible OL
 
 

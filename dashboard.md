@@ -38,6 +38,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - An openly licensed morphologically tagged Swete's Septuagint is under development.  Contact [James Tauber](mailto:jtauber@jtauber.com) for details.
 - *Coptic Scriptorium*
   - [Coptic Scriptorium](http://data.copticscriptorium.org/) (XML): Coptic corpus with morphology and phrasing. Freely licensed, data available on Github.
+- *Hebrew Old Testament*
+  - [Shebanq](https://shebanq.ancient-data.org/sources) (SQL): Hebrew Old Testament, SQL database data.
 
 
 ### Treebanks
@@ -50,6 +52,9 @@ If you believe a resource should be added to this page, please contact us (see t
    - [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat) (XML): Lowfat trees transformed from GBI trees to make them easier to query. 
 - *Tischendorff Greek New Testament*
    - [PROIEL](https://github.com/proiel/proiel-treebank) (XML): High quality dependency trees in an eclectic and expressive format. Part of a parallel corpus of old Indo-European Bible translations, including Greek, Armenian, Gothic, Old Church Slavonic, and Latin.
+- *Hebrew Old Testament*
+  - [Shebanq](https://shebanq.ancient-data.org/sources) (SQL): Hebrew Old Testament, SQL database data.
+
 
 ### Lexicons
 
@@ -59,6 +64,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
 - *Strong's Dictionary*
   - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
+- *Hebrew Lexicon*
+  - [Shebanq](https://shebanq.ancient-data.org/sources) (XML): A Hebrew lexicon from the Shebanq project.
 
 ### Commentaries, Secondary Literature, and Other Resources
 
