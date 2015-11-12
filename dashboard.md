@@ -36,6 +36,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
 - *Swete's Septuagint*
   - An openly licensed morphologically tagged Swete's Septuagint is under development.  Contact [James Tauber](mailto:jtauber@jtauber.com) for details.
+- *Coptic Scriptorium*
+  - [Coptic Scriptorium](http://data.copticscriptorium.org/) (XML): Coptic corpus with morphology and phrasing. Freely licensed, data available on Github.
 
 
 ### Treebanks
