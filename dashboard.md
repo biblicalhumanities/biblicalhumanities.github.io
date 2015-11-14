@@ -3,7 +3,7 @@ layout: page
 title: Dashboard
 permalink: /dashboard/
 ---
-This dashboard primarily lists data resources that are centrally important for digital biblical humanities and available now. Unless otherwise stated, they provide their data under open licenses. There are multiple versions of some of these resources, we attempt to point to the best authoritative source.
+This dashboard primarily lists data resources that are centrally important for digital biblical humanities and available now. Unless otherwise stated, they provide their data under open licenses. There are multiple versions of some of these resources, we attempt to point to the best authoritative source.  For Greek resources, [Perseus](https://github.com/PerseusDL/tei-conversion-tools/wiki) is well worth consulting as well.
 
 If you believe a resource should be added to this page, please contact us (see the bottom of any page on this site for contact information).
 
@@ -61,11 +61,17 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Abbott-Smith*
   - [Translatable Exegetical Tools](https://github.com/translatable-exegetical-tools/Abbott-Smith) (TEI XML): Probably the best quality lexicon in the public domain.
 - *Dodson*
-  - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
+  - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV, XML): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
 - *Strong's Dictionary*
   - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
 - *Hebrew Lexicon*
   - [Shebanq](https://shebanq.ancient-data.org/sources) (XML): A Hebrew lexicon from the Shebanq project.
+
+### Grammars and Paradigms
+- *Greek Syntax*
+  - [Rydberg-Cox](http://www.perseus.tufts.edu/hopper/dltext?doc=Perseus%3Atext%3A1999.04.0052)(XML): Jeffrey A. Rydberg-Cox, Overview of Greek Syntax. Extremely useful summaries of Greek syntax, easily integrated into a reading environment.
+- *Greek Paradigms*
+  - [Masternarde](http://ucbclassics.dreamhosters.com/ancgreek/AGTdownload.zip) (HTML, PDF): Ancient Greek Tutorials, by Donald J. Mastronarde with the assistance of the Berkeley Language Center of the University of California, Berkeley. ©1999-2005 The Regents of the University of California. Copyright prevents free distribution, but this can be useful for producing resources.
 
 ### Commentaries, Secondary Literature, and Other Resources
 

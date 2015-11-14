@@ -20,6 +20,8 @@ In addition, we sponsor two online forums for discussing biblical languages:
 
 ### Technical Advisory Board:
 
+These are the members of the biblicalhumanities.org Technical Advisory Board.
+
 - Jonathan Robie <jonathan.robie@biblicalhumanities.org>
 - Randall Tan <randall.tan@globalbibleinitiative.org>
 - Patrick Durusau <patrick@durusau.net>
@@ -29,6 +31,8 @@ In addition, we sponsor two online forums for discussing biblical languages:
 - James Tauber <jtauber@jtauber.com>
 
 ### Technical Liasons:
+
+These are members of the broader community who advise us on resources they provide or needs that we can help them with. 
 
 - Bridget Almas <bridget.almas@tufts.edu>, [Perseus Project](http://www.perseus.tufts.edu) / [Perseids](http://perseids.org) / [Alpheios](http://perseids.org)
 - Giuseppe Celano <celano@informatik.uni-leipzig.de>,  [University of Leipzig](http://www.dh.uni-leipzig.de/wo/)
