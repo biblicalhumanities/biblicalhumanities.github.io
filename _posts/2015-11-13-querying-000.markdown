@@ -1,0 +1,372 @@
+---
+layout: post
+title:  "Querying Biblical Texts: Part 1"
+date:   2015-11-13 14:33:50
+categories: xquery tutorial greek
+---
+
+This is the first in a series on querying Greek texts with XQuery.  We will also look at the differences among various representations of the same text, starting with the base text, morphology, and three different treebank formats. As we will see, the representation of a text indicates what the producer of the text was most interested in, and it determines the structure and power of queries done on that particular representation. The principles discussed here also apply to other languages. 
+
+This is written as a tutorial, and it can be read in two ways.  The first time through, you may want to simply read the text. If you want to really learn how to do this yourself, you should download an XQuery processor and some data (in your favorite biblical language) and try these queries and variations on them.
+
+### Getting an XQuery processsor
+
+These queries are written in [XQuery 3.0](http://www.w3.org/TR/xquery-30/), which works on any text represented in XML (including TEI).
+
+You can find an XQuery processor at any of these links:
+
+- [BaseX](basex.org)
+- [eXist](http://exist-db.org/exist/apps/homepage/index.html)
+- [Saxon-HE](http://www.saxonica.com/download/opensource.xml)
+- [xDB](https://community.emc.com/docs/DOC-3155)
+- [Zorba](http://www.zorba.io/home)
+
+BaseX, eXist, and xDB are XML databases that create indexes for more efficient processing, and are designed for creating and deploying web applications. They also have their own integrated development environments. Saxon and Zorba can be used to query files directly in your file system.  If you are using Saxon or Zorba, you might want to consider using an XML development environment like [OxygenXML](http://www.oxygenxml.com/).
+
+If you want to query JSON and XML together, you need to use [XQuery 3.1](http://www.w3.org/TR/xquery-31/), which is not yet a final standard.  Currently, Zorba does not support XQuery 3.1, but the other processors all provide at least partial support.
+
+### Getting some texts
+
+Once you have an XQuery processor, you need some data to work with. Our [dashboard](/dashboard/) contains a set of useful texts in various biblical languages, including:
+
+- [Base Texts](/dashboard/#base-texts)
+- [Morphologically Tagged Texts](/dashboard/#morphologically-tagged-texts)
+- [Syntax Trees](/dashboard/#syntax-trees)
+- [Lexicons](/dashboard/#lexicons)
+- [Grammars and Paradigms](/dashboard/#grammars-and-paradigms)
+- [Commentaries, Secondary Literature, and Other Resources](/dashboard/#commentaries-secondary-literature-and-other-resources)
+
+In this post, we will focus on base texts.  The next post will look at morphologically tagged texts and syntax trees.  Over time, we will look at queries on all of these kinds of resources.
+
+### Base texts
+
+The simplest texts are base texts with little or no analysis. For instance, here is an excerpt from the [SBL Greek New Testament](http://sblgnt.com/).   This text is encoded using an
+XML standard called [OSIS](http://www.bibletechnologies.net/), created by the [Bible Technology Group](http://www.bibletechnologies.net/AboutBTG.dsp.html).
+
+Here is an excerpt from the SBL Greek New Testament:
+
+{% highlight xml linenos %} 
+<sblgnt>
+  <title>
+    <p>The Greek New Testament: SBL Edition</p>
+    <p>Michael W. Holmes, General Editor</p>
+    <p>Copyright 2010 Logos Bible Software and the Society of Biblical Literature</p>
+  </title>
+  <license>
+    <p>See <a href="http://SBLGNT.com">SBLGNT.com</a> for license details.</p>
+  </license>
+  <book id="Mt">
+    <title>ΚΑΤΑ ΜΑΘΘΑΙΟΝ</title>
+    <p>
+      <verse-number id="Matthew 1:1">1:1</verse-number>
+      <w>Βίβλος</w>
+      <suffix> </suffix>
+      <w>γενέσεως</w>
+      <suffix> </suffix>
+      <w>Ἰησοῦ</w>
+      <suffix> </suffix>
+      <w>χριστοῦ</w>
+      <suffix> </suffix>
+      <w>υἱοῦ</w>
+      <suffix> </suffix>
+      <w>Δαυὶδ</w>
+      <suffix> </suffix>
+      <w>υἱοῦ</w>
+      <suffix> </suffix>
+      <w>Ἀβραάμ</w>
+      <suffix>.  </suffix>
+    </p>
+    !!! SNIP !!!
+{% endhighlight %}
+
+#### Simple path expressions
+
+Now let's do some basic queries.  In XQuery, a path expression navigates an XML structure. For instance, the following query finds titles in the XML shown above:
+
+{% highlight xquery linenos %} 
+/sblgnt/book/title
+{% endhighlight %}
+
+At the beginning of a path, the `/` operator refers to the top of the document.  A simple string like `sblgnt` is the name of an XML element. Between two steps of a path, the right hand of the `/` operator identifies children of whatever is on the left hand side. So the above query says "start at the top of the document, find me `sblgnt` elements, then find me any of their children that are `book` elements, then find me the `title` of each of these book elements.
+
+In a complex document, paths can also be complex, so XQuery also has a `//` operator, which is like the `/` operator, but finds descendents as well as direct children.  At the beginning of a path, the `//` operator starts at the top of the document. The following query finds `book` elements anywhere in the document, and finds the `title` of each book.
+
+{% highlight xquery linenos %} 
+//book/title
+{% endhighlight %}
+
+Both queries return the same result:
+
+{% highlight xml linenos %} 
+<?xml version="1.0" encoding="UTF-8"?>
+<title>ΚΑΤΑ ΜΑΘΘΑΙΟΝ</title>
+<title>ΚΑΤΑ ΜΑΡΚΟΝ</title>
+<title>ΚΑΤΑ ΛΟΥΚΑΝ</title>
+<title>ΚΑΤΑ ΙΩΑΝΝΗΝ</title>
+<title>ΠΡΑΞΕΙΣ ΑΠΟΣΤΟΛΩΝ</title>
+<title>ΠΡΟΣ ΡΩΜΑΙΟΥΣ</title>
+<title>ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Α</title>
+<title>ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Β</title>
+<title>ΠΡΟΣ ΓΑΛΑΤΑΣ</title>
+<title>ΠΡΟΣ ΕΦΕΣΙΟΥΣ</title>
+<title>ΠΡΟΣ ΦΙΛΙΠΠΗΣΙΟΥΣ</title>
+<title>ΠΡΟΣ ΚΟΛΟΣΣΑΕΙΣ</title>
+<title>ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Α</title>
+<title>ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Β</title>
+<title>ΠΡΟΣ ΤΙΜΟΘΕΟΝ Α</title>
+<title>ΠΡΟΣ ΤΙΜΟΘΕΟΝ Β</title>
+<title>ΠΡΟΣ ΤΙΤΟΝ</title>
+<title>ΠΡΟΣ ΦΙΛΗΜΟΝΑ</title>
+<title>ΠΡΟΣ ΕΒΡΑΙΟΥΣ</title>
+<title>ΙΑΚΩΒΟΥ</title>
+<title>ΠΕΤΡΟΥ Α</title>
+<title>ΠΕΤΡΟΥ Β</title>
+<title>ΙΩΑΝΝΟΥ Α</title>
+<title>ΙΩΑΝΝΟΥ Β</title>
+<title>ΙΩΑΝΝΟΥ Γ</title>
+<title>ΙΟΥΔΑ</title>
+<title>ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ</title>
+{% endhighlight %}
+
+#### Functions
+
+XQuery has a library of standard functions.  Let's use the `count` function to see how many books there are in the SBL Greek New Testament.
+
+{% highlight xquery linenos %}  
+count(//book)
+{% endhighlight %}
+
+The result of this query is `27`.
+
+#### Creating XML
+
+XQuery can create new structures using data found in existing structures.  First let's see how to create elements and attributes in XQuery using element and attribute constructors.  If we are not using expressiosn to create the content, but using literal content known in advance, can use XML syntax. An XQuery that contains XML syntax returns the equivalent XML structure:
+
+{% highlight xquery linenos %}  
+<count src="sblgnt">27</count>
+{% endhighlight %}
+
+XQuery expressions can be embedded in element constructors using curly braces.  This version computers the number of chapters with an XQuery expression:
+
+{% highlight xquery linenos %}  
+<count src="sblgnt">{ count(//book) }</count>
+{% endhighlight %}
+
+Attribute constructors also allow curly braces to embed XQuery expressions:
+
+{% highlight xquery linenos %}  
+<count src="sblgnt" n="{ count(//book) }"/>
+{% endhighlight %}
+
+The result of the above query is:
+
+{% highlight xml linenos %}  
+<count src="sblgnt" n="27"/>
+{% endhighlight %}
+
+
+#### FLWOR Expressions
+
+FLWOR expressions (pronounced "flower expressions") allow you to navigate any number of XML structures at the same time, creating results as you go.  The name is an acronym, standing for the keywords `for`, `let`, `where`, `order by`, and `return`, which are the clauses of a FLWOR expression in XQuery 1.0.  XQuery 3.0 adds clauses for grouping and windowing.
+
+A `for` clause is used to iterate over a set of items identified by a path expression.  For instance, this query iterates over the `book` elements, returning the title for each.
+
+{% highlight xquery linenos %}  
+for $book in //book
+return $book/title
+{% endhighlight %}
+
+It is equivalent to the simpler query `//book/title`, which we saw above. However, it can be used to create new results by changing the `return` clause.  Let's write a query to associate the identifier for each book with its Greek title.
+
+{% highlight xquery linenos %}  
+for $book in //book
+return 
+  <book id="{$book/@id}">
+    {
+      $book/title
+    }
+  </book
+{% endhighlight %}
+
+While we're at it, let's count the number of paragraphs, verses, and words in each book:
+
+{% highlight xquery linenos %}  
+for $book in //book
+return 
+  <book 
+    id="{$book/@id}" 
+    paragraphs="{count($book/p)}" 
+    verses="{count($book//verse-number)}" 
+    words="{count($book//w)}">
+    {
+      $book/title
+    }
+  </book>
+{% endhighlight %}
+
+Here is the result of the above query:
+
+{% highlight xml linenos %}  
+<?xml version="1.0" encoding="UTF-8"?>
+<book id="Mt" paragraphs="211" verses="1068" words="18329">
+   <title>ΚΑΤΑ ΜΑΘΘΑΙΟΝ</title>
+</book>
+<book id="Mk" paragraphs="125" verses="673" words="11286">
+   <title>ΚΑΤΑ ΜΑΡΚΟΝ</title>
+</book>
+<book id="Lu" paragraphs="211" verses="1149" words="19446">
+   <title>ΚΑΤΑ ΛΟΥΚΑΝ</title>
+</book>
+<book id="Jn" paragraphs="138" verses="866" words="15438">
+   <title>ΚΑΤΑ ΙΩΑΝΝΗΝ</title>
+</book>
+<book id="Ac" paragraphs="163" verses="1002" words="18412">
+   <title>ΠΡΑΞΕΙΣ ΑΠΟΣΤΟΛΩΝ</title>
+</book>
+<book id="Ro" paragraphs="85" verses="430" words="7055">
+   <title>ΠΡΟΣ ΡΩΜΑΙΟΥΣ</title>
+</book>
+<book id="1Co" paragraphs="87" verses="437" words="6812">
+   <title>ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Α</title>
+</book>
+<book id="2Co" paragraphs="48" verses="256" words="4473">
+   <title>ΠΡΟΣ ΚΟΡΙΝΘΙΟΥΣ Β</title>
+</book>
+<book id="Gal" paragraphs="31" verses="149" words="2226">
+   <title>ΠΡΟΣ ΓΑΛΑΤΑΣ</title>
+</book>
+<book id="Eph" paragraphs="25" verses="155" words="2416">
+   <title>ΠΡΟΣ ΕΦΕΣΙΟΥΣ</title>
+</book>
+<book id="Php" paragraphs="23" verses="104" words="1626">
+   <title>ΠΡΟΣ ΦΙΛΙΠΠΗΣΙΟΥΣ</title>
+</book>
+<book id="Col" paragraphs="20" verses="95" words="1580">
+   <title>ΠΡΟΣ ΚΟΛΟΣΣΑΕΙΣ</title>
+</book>
+<book id="1Th" paragraphs="17" verses="89" words="1473">
+   <title>ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Α</title>
+</book>
+<book id="2Th" paragraphs="11" verses="47" words="820">
+   <title>ΠΡΟΣ ΘΕΣΣΑΛΟΝΙΚΕΙΣ Β</title>
+</book>
+<book id="1Tim" paragraphs="26" verses="113" words="1591">
+   <title>ΠΡΟΣ ΤΙΜΟΘΕΟΝ Α</title>
+</book>
+<book id="2Tim" paragraphs="17" verses="83" words="1235">
+   <title>ΠΡΟΣ ΤΙΜΟΘΕΟΝ Β</title>
+</book>
+<book id="Tit" paragraphs="14" verses="46" words="659">
+   <title>ΠΡΟΣ ΤΙΤΟΝ</title>
+</book>
+<book id="Phm" paragraphs="7" verses="25" words="334">
+   <title>ΠΡΟΣ ΦΙΛΗΜΟΝΑ</title>
+</book>
+<book id="Heb" paragraphs="57" verses="303" words="4935">
+   <title>ΠΡΟΣ ΕΒΡΑΙΟΥΣ</title>
+</book>
+<book id="Jam" paragraphs="25" verses="108" words="1739">
+   <title>ΙΑΚΩΒΟΥ</title>
+</book>
+<book id="1Pe" paragraphs="21" verses="105" words="1678">
+   <title>ΠΕΤΡΟΥ Α</title>
+</book>
+<book id="2Pe" paragraphs="13" verses="61" words="1098">
+   <title>ΠΕΤΡΟΥ Β</title>
+</book>
+<book id="1Jn" paragraphs="23" verses="105" words="2137">
+   <title>ΙΩΑΝΝΟΥ Α</title>
+</book>
+<book id="2Jn" paragraphs="4" verses="13" words="245">
+   <title>ΙΩΑΝΝΟΥ Β</title>
+</book>
+<book id="3Jn" paragraphs="8" verses="15" words="219">
+   <title>ΙΩΑΝΝΟΥ Γ</title>
+</book>
+<book id="Jud" paragraphs="8" verses="25" words="459">
+   <title>ΙΟΥΔΑ</title>
+</book>
+<book id="Re" paragraphs="136" verses="405" words="9833">
+   <title>ΑΠΟΚΑΛΥΨΙΣ ΙΩΑΝΝΟΥ</title>
+</book>
+{% endhighlight %}
+
+Now let's look at the words themselves. Here is a query that generates frequency lists.
+
+{% highlight xquery linenos %}  
+for $w in //w
+let $text := string($w)
+group by $text
+let $count := count($w)
+where $count > 1000
+order by $count descending
+return <word count="{$count}">{ $text }</word>
+{% endhighlight %}
+
+This query iterates over `w` elements, sets the variable `$text` to the value of each `w` element in turn, then groups words by their text value using a `group by` clause.  Within each group, the variable `$count` is set to the number of words that have the given value.  The `where` clause selects only groups with at least 1000 words.  The `order by` clause sorts them by frequency. 
+
+Here is the result of the above query:
+
+{% highlight xml linenos %}  
+<?xml version="1.0" encoding="UTF-8"?>
+<word count="8563">καὶ</word>
+<word count="2798">ὁ</word>
+<word count="2680">ἐν</word>
+<word count="2597">δὲ</word>
+<word count="2498">τοῦ</word>
+<word count="1744">εἰς</word>
+<word count="1655">τὸ</word>
+<word count="1560">τὸν</word>
+<word count="1508">τὴν</word>
+<word count="1413">αὐτοῦ</word>
+<word count="1298">τῆς</word>
+<word count="1283">ὅτι</word>
+<word count="1225">τῷ</word>
+<word count="1203">τῶν</word>
+<word count="1076">οἱ</word
+{% endhighlight %}
+
+###  But wait, there's more ...
+
+In today's post, we've seen how to use XQuery to do a variety of queries based on the structure and values of an XML text. Queries can return information and structures that the original author of the text might not have foreseen.
+
+However, XQuery can only query information that is explicitly present in some source. For instance, in the frequency list generated by the last example, ὁ, τοῦ, τὸ, τὸν, τὴν, τῆς, τῷ, τῶν, and οἱ are actually different forms of the same word, the Greek article. The query has no way of knowing this using only the base text. In the next post in this series, we will look morphologically tagged texts and syntax trees, which contain a great deal more information that can be used to write queries with a much more sophisticated understanding of the language. 
+
+Here is one example of the kind of data we will be querying:
+
+{% highlight xml lineno %}    
+    <sentence>
+      <cite>Luk24:19:1-24:19:4</cite>
+      <wg nodeId="420240190010040" class="cl" role="s">
+        <w morphId="42024019001" class="conj" lemma="καί">καὶ</w>
+        <wg nodeId="420240190020030" class="cl">
+          <wg nodeId="420240190020020" class="cl" head="true">
+            <w morphId="42024019002" 
+               class="verb" 
+               role="v"
+               head="true" 
+               lemma="λέγω"
+               person="third"
+               number="singular"
+               tense="aorist"
+               voice="active"
+               mood="indicative">εἶπεν</w>
+            <w morphId="42024019003" 
+               class="pron" 
+               role="io" 
+               lemma="αὐτός" 
+               case="dative"
+               gender="masculine"
+               number="plural">αὐτοῖς</w>
+          </wg>
+          <w morphId="42024019004" 
+             class="pron" 
+             lemma="ποῖος" 
+             case="accusative"
+             gender="neuter"
+             number="plural">Ποῖα;</w>
+        </wg>
+      </wg>
+    </sentence>
+{% endhighlight %}
+
