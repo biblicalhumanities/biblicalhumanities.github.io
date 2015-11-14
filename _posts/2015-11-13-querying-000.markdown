@@ -9,7 +9,7 @@ This is the first in a series on querying Greek texts with XQuery.  We will also
 
 This is written as a tutorial, and it can be read in two ways.  The first time through, you may want to simply read the text. If you want to really learn how to do this yourself, you should download an XQuery processor and some data (in your favorite biblical language) and try these queries and variations on them.
 
-### Getting an XQuery processsor
+### Getting an XQuery processor
 
 These queries are written in [XQuery 3.0](http://www.w3.org/TR/xquery-30/), which works on any text represented in XML (including TEI).
 
