@@ -1,0 +1,211 @@
+---
+layout: post
+title:  "Querying Biblical Texts: Part 2"
+date:   2015-11-15 14:33:50
+categories: xquery tutorial greek
+---
+
+This is the second in a series on querying Greek texts with
+XQuery. Before you read this, you should consider reading [Querying
+Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}), which
+introduces simple queries on base texts.  In this post, we introduce
+morphologies and syntax trees. In the next post, we will show some of
+the queries that can be done using treebank markup.
+
+### A note on XQuery and XML
+
+First, a word on XQuery and XML. People in the digital humanities use
+various languages for exploring texts, and this tutorial is not
+designed to say that XQuery is the only tool to use. The author
+believes that learning both XQuery and a scripting language like
+Python is generally wise for people working with these texts, but many
+scholars will choose other tools.  One advantage of XQuery for a
+tutorial like this is that it is very high level: If you choose to use
+another language rather than XQuery, this tutorial should still be
+useful for presenting the concepts.  After the XQuery tutorial is
+done, there will also be a tutorial in Python.
+
+Regardless of the languages you use for querying or programming, XML is one of the best formats for encoding texts. One XML format, the 
+[Text Encoding Initiative (TEI)](http://www.tei-c.org/index.xml) is
+the most widely used format in digital humanities. XML provides good support for the kind of metadata people use in digital humanities, and almost all programming languages have libraries for working with XML. A future post will deal with formats for various kinds of data.
+
+Now let's continue the tutorial where we left off last time ...
+
+### Morphologies and Syntax Trees
+
+In Part 1, we queried the [SBL Greek New Testament](http://sblgnt.com/) text.  Here is an example of a verse in that format:
+
+{% highlight xml lineno %}    
+<p>
+  <verse-number id="Matthew 5:4">4</verse-number>
+  <w>μακάριοι</w>
+  <suffix> </suffix>
+  <w>οἱ</w>
+  <suffix> </suffix>
+  <w>πενθοῦντες</w>
+  <suffix>,  </suffix>
+  <w>ὅτι</w>
+  <suffix> </suffix>
+  <w>αὐτοὶ</w>
+  <suffix> </suffix>
+  <w>παρακληθήσονται</w>
+  <suffix>.  </suffix>
+</p>
+{% endhighlight %}
+
+In this part of the tutorial, we need morphology and syntax. We will use the [MorphGNT](https://github.com/morphgnt/sblgnt) morphology.  The morphology provides information on individual words, such as voice, tense, mood, person, number, and case, plus the dictionary form. MorphGNT is a high quality morphology, and is widely used.
+
+For this verse, it looks like this:
+
+{% highlight text lineno %}
+010504 A- ----NPM- μακάριοι μακάριοι μακάριοι μακάριος
+010504 RA ----NPM- οἱ οἱ οἱ ὁ
+010504 V- -PAPNPM- πενθοῦντες, πενθοῦντες πενθοῦντες πενθέω
+010504 C- -------- ὅτι ὅτι ὅτι ὅτι
+010504 RP ----NPM- αὐτοὶ αὐτοὶ αὐτοί αὐτός
+010504 V- 3FPI-P-- παρακληθήσονται. παρακληθήσονται παρακληθήσονται παρακαλέω
+010505 A- ----NPM- μακάριοι μακάριοι μακάριοι μακάριος
+010505 RA ----NPM- οἱ οἱ οἱ ὁ
+010505 A- ----NPM- πραεῖς, πραεῖς πραεῖς πραΰς
+010505 C- -------- ὅτι ὅτι ὅτι ὅτι
+010505 RP ----NPM- αὐτοὶ αὐτοὶ αὐτοί αὐτός
+010505 V- 3FAI-P-- κληρονομήσουσι κληρονομήσουσι κληρονομήσουσι(ν) κληρονομέω
+010505 RA ----ASF- τὴν τὴν τήν ὁ
+010505 N- ----ASF- γῆν. γῆν γῆν γῆ
+{% endhighlight %}
+
+That's not XML, and we can get the same information in an [XML treebank](/dashboard/#syntax-trees). The main treebanks for biblical Greek ( [Global Bible Initiative](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt), [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat), [PROIEL](https://github.com/proiel/proiel-treebank)) all use morphology done by James Tauber and Ulrik Sandborg-Petersen, the brains behind MorphGNT (so do most Bible software programs).  
+
+For this tutorial, a treebank is more convenient. A syntax tree describes the relationships among the words of a sentence. There are different kinds of syntax trees, they describe different kinds of relationships, and they describe these relationships in different ways.  Let's look at three different treebanks:
+
+#### [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat)
+
+The [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat) treebanks define sentences in terms of words (`w` elements) and word groups (`wg` elements).   The `class` attributes for a word identify the kind of word that it is, e.g. a noun, a verb, a determiner, or an adjective.  The `class` attributes for a word group identify the kind of word group it is, e.g. a clause, a noun phrase, or a prepositional phrase.  The  `role` attributes for either a word or a word group identify the role of the node with respect to the main verb, e.g. subject, object, indirect object, or adverbial.  Like the other two treebank formats, the morphology data from MorphGNT has been incorporated into the treebank.
+
+{% highlight xml lineno %}
+   <sentence>
+      <cite>Mat5:4:1-5:4:6</cite>
+      <wg nodeId="400050040010060" class="cl" role="s">
+         <wg nodeId="400050040010030" class="cl" head="true">
+            <w morphId="40005004001" class="adj" role="p" head="true" 
+               lemma="μακάριος"
+               case="nominative"
+               gender="masculine"
+               number="plural">μακάριοι</w>
+            <wg nodeId="400050040020020" class="np" role="s">
+               <w morphId="40005004002" class="det" 
+                  lemma="ὁ" 
+                  case="nominative"
+                  gender="masculine"
+                  number="plural">οἱ</w>
+               <w morphId="40005004003" class="verb" head="true" 
+                  lemma="πενθέω" 
+                  tense="present"
+                  voice="active"
+                  mood="participle"
+                  case="nominative"
+                  gender="masculine"
+                  number="plural">πενθοῦντες,</w>
+               <pu>,</pu>
+            </wg>
+         </wg>
+         <wg nodeId="400050040040030" class="cl">
+            <w morphId="40005004004" class="conj" lemma="ὅτι">ὅτι</w>
+            <wg nodeId="400050040050020" class="cl">
+               <w morphId="40005004005" class="pron" role="s" 
+                  lemma="αὐτός" 
+                  case="nominative"
+                  gender="masculine"
+                  number="plural">αὐτοὶ</w>
+               <w morphId="40005004006" class="verb" role="v" head="true" 
+                  lemma="παρακαλέω"
+                  person="third"
+                  number="plural"
+                  tense="future"
+                  voice="passive"
+                  mood="indicative">παρακληθήσονται.</w>
+               <pu>.</pu>
+            </wg>
+         </wg>
+      </wg>
+   </sentence>
+{% endhighlight %}
+
+#### [Global Bible Initiative](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt)
+
+The Lowfat treebanks shown above are derived from the [Global Bible Initiative](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt) treebanks, and use their analysis. The GBI treebanks represent both words and word groups as `Node` elements, and contain all of the information found in the Lowfat treebanks. In addition, they contain information that describes the parse tree, information that is not found in the Lowfat treebank. The GBI trees are much larger, with more nodes and more attributes per node, and perhaps more difficult to read.
+
+{% highlight xml lineno %}
+<Sentence ID = "Mat5:4:1-5:4:6">
+<Trees>
+<Tree>
+<Node Cat="S" Head="0" nodeId="400050040010061">
+  <Node Cat="CL" Start="0" End="5" Rule="ClCl" Head="0" nodeId="400050040010060">
+    <Node Cat="CL" Start="0" End="2" Rule="P-S" Head="0" ClType="Verbless" nodeId="400050040010030">
+      <Node Cat="P" Start="0" End="0" Rule="Adjp2P" Head="0" nodeId="400050040010012">
+        <Node Cat="adjp" Start="0" End="0" Rule="Adj2Adjp" Head="0" nodeId="400050040010011">
+          <Node Cat="adj" Start="0" End="0" Case="Nominative" UnicodeLemma="μακάριος" Unicode="μακάριοι" 
+                Gender="Masculine" Number="Plural" morphId="40005004001" nodeId="400050040010010">μακάριοι</Node>
+        </Node>
+      </Node>
+      <Node Cat="S" Start="1" End="2" Rule="Np2S" Head="0" nodeId="400050040020021">
+        <Node Cat="np" Start="1" End="2" Rule="DetCL" Head="1" nodeId="400050040020020">
+          <Node Cat="det" Start="1" End="1" Case="Nominative" UnicodeLemma="ὁ" Unicode="οἱ" 
+                Gender="Masculine" Number="Plural" morphId="40005004002" nodeId="400050040020010">οἱ</Node>
+          <Node Cat="CL" Start="2" End="2" Rule="V2CL" Head="0" nodeId="400050040030013">
+            <Node Cat="V" Start="2" End="2" Rule="Vp2V" Head="0" nodeId="400050040030012">
+              <Node Cat="vp" Start="2" End="2" Rule="V2VP" Head="0" nodeId="400050040030011">
+                <Node Cat="verb" Start="2" End="2" UnicodeLemma="πενθέω" Voice="Active" Unicode="πενθοῦντες," 
+                      Tense="Present" Number="Plural" morphId="40005004003" Mood="Participle" 
+                      Case="Nominative" Gender="Masculine" nodeId="400050040030010">πενθοῦντες</Node>
+              </Node>
+            </Node>
+          </Node>
+        </Node>
+      </Node>
+    </Node>
+    <Node Cat="CL" Start="3" End="5" Rule="sub-CL" nodeId="400050040040030">
+      <Node Cat="conj" Start="3" End="3" UnicodeLemma="ὅτι" Unicode="ὅτι" morphId="40005004004" nodeId="400050040040010">ὅτι</Node>
+      <Node Cat="CL" Start="4" End="5" Rule="S-V" Head="1" nodeId="400050040050020">
+        <Node Cat="S" Start="4" End="4" Rule="Np2S" Head="0" nodeId="400050040050012">
+          <Node Cat="np" Start="4" End="4" Rule="Pron2NP" Head="0" nodeId="400050040050011">
+            <Node Cat="pron" Start="4" End="4" UnicodeLemma="αὐτός" Unicode="αὐτοὶ" Number="Plural" Type="Personal" morphId="40005004005" 
+                  Case="Nominative" Gender="Masculine" nodeId="400050040050010">αὐτοὶ</Node>
+          </Node>
+        </Node>
+        <Node Cat="V" Start="5" End="5" Rule="Vp2V" Head="0" nodeId="400050040060012">
+          <Node Cat="vp" Start="5" End="5" Rule="V2VP" Head="0" nodeId="400050040060011">
+            <Node Cat="verb" Start="5" End="5" UnicodeLemma="παρακαλέω" Person="Third" Voice="Passive" Unicode="παρακληθήσονται." 
+                  Tense="Future" Number="Plural" morphId="40005004006" Mood="Indicative" nodeId="400050040060010">παρακληθήσονται</Node>
+          </Node>
+        </Node>
+      </Node>
+    </Node>
+  </Node>
+</Node>
+</Tree>
+</Trees>
+</Sentence>
+{% endhighlight %}
+
+#### [PROIEL](https://github.com/proiel/proiel-treebank)
+
+The  [PROIEL](https://github.com/proiel/proiel-treebank) treebank is a dependency treebank.  It does not have word groups at all.  Instead, it describes the relationships among words using identifiers.  
+
+{% highlight xml lineno %}
+<sentence id="14762" status="reviewed" presentation-after=" ">
+  <token id="268602" form="μακάριοι" citation-part="MATT 5.4" lemma="μακάριος" part-of-speech="A-" morphology="-p---mnp-i" head-id="287694" relation="xobj" presentation-after=" ">
+    <slash target-id="268604" relation="xsub"/>
+  </token>
+  <token id="268603" form="οἱ" citation-part="MATT 5.4" lemma="ὁ" part-of-speech="S-" morphology="-p---mn--i" head-id="268604" relation="aux" presentation-after=" "/>
+  <token id="268604" form="πραεῖς" citation-part="MATT 5.4" lemma="πραΰς" part-of-speech="A-" morphology="-p---mnp-i" head-id="287694" relation="sub" information-status="kind" presentation-after=", "/>
+  <token id="268606" form="ὅτι" citation-part="MATT 5.4" lemma="ὅτι" part-of-speech="G-" morphology="---------n" head-id="287694" relation="adv" presentation-after=" "/>
+  <token id="268607" form="αὐτοὶ" citation-part="MATT 5.4" lemma="αὐτός" part-of-speech="Pp" morphology="3p---mn--i" head-id="268608" relation="sub" antecedent-id="268604" information-status="old" presentation-after=" "/>
+  <token id="268608" form="κληρονομήσουσιν" citation-part="MATT 5.4" lemma="κληρονομέω" part-of-speech="V-" morphology="3pfia----i" head-id="268606" relation="pred" presentation-after=" "/>
+  <token id="268609" form="τήν" citation-part="MATT 5.4" lemma="ὁ" part-of-speech="S-" morphology="-s---fa--i" head-id="268610" relation="aux" presentation-after=" "/>
+  <token id="268610" form="γῆν" citation-part="MATT 5.4" lemma="γῆ" part-of-speech="Nb" morphology="-s---fa--i" head-id="268608" relation="obj" information-status="acc_gen" presentation-after="."/>
+  <token id="287694" empty-token-sort="V" citation-part="MATT 5.4" relation="pred"/>
+</sentence>
+{% endhighlight %}
+
+Each of these treebank formats has advantages and disadvantages. In the next few parts of this tutorial, we will explore queries on the Lowfat treebank. A future set of posts will do the same queries using the PROIEL database.
