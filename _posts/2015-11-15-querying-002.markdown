@@ -1,0 +1,514 @@
+---
+layout: post
+title:  "Querying Biblical Texts: Part 3"
+date:   2015-11-15 14:33:50
+categories: xquery tutorial greek
+---
+
+This is the third in a series on querying Greek texts with
+XQuery. Before you read this, you should consider reading the earlier
+posts:
+
+- [Querying Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
+- [Querying Biblical Texts: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
+
+In this post, we will start doing morphology queries on the Lowfat syntax trees.  The next post will start a series on querying syntax, leading up to queries related to [Rikjsbaron's chapter on the Greek Participle](http://www.press.uchicago.edu/ucp/books/book/chicago/S/bo5387752.html).
+
+### Queries on Morphology
+
+Before we do our first query on morphology, let's take a look at the word frequency query we used at the end of [Querying Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}):
+
+{% highlight xml lineno %}    
+for $w in //w
+let $text := string($w)
+group by $text
+let $count := count($w)
+where $count > 1000
+order by $count descending
+return <word count="{$count}">{ $text }</word>
+{% endhighlight %}
+
+It just so happens that the Lowfat trees also use the element name `w` to identify a word, even though they add in a lot more information:
+
+{% highlight xml lineno %}    
+    <sentence>
+      <cite>Luk24:19:1-24:19:4</cite>
+      <wg nodeId="420240190010040" class="cl" role="s">
+        <w morphId="42024019001" class="conj" lemma="καί">καὶ</w>
+        <wg nodeId="420240190020030" class="cl">
+          <wg nodeId="420240190020020" class="cl" head="true">
+            <w morphId="42024019002"
+               class="verb"
+               role="v"
+               head="true"
+               lemma="λέγω"
+               person="third"
+               number="singular"
+               tense="aorist"
+               voice="active"
+               mood="indicative">εἶπεν</w>
+            <w morphId="42024019003"
+               class="pron"
+               role="io"
+               lemma="αὐτός"
+               case="dative"
+               gender="masculine"
+               number="plural">αὐτοῖς</w>
+          </wg>
+          <w morphId="42024019004"
+             class="pron"
+             lemma="ποῖος"
+             case="accusative"
+             gender="neuter"
+             number="plural">Ποῖα;</w>
+        </wg>
+      </wg>
+    </sentence>
+{% endhighlight %}
+
+Because of this, we can use the same query on the Lowfat trees, even though the structure is significantly different.  (This is possible because the path expression `//w` doesn't care about the details of the structure, it finds `w` elements at any level.)  Here are the results of the above query:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<word count="8577">καὶ</word>
+<word count="2803">ὁ</word>
+<word count="2684">ἐν</word>
+<word count="2609">δὲ</word>
+<word count="2500">τοῦ</word>
+<word count="1749">εἰς</word>
+<word count="1657">τὸ</word>
+<word count="1562">τὸν</word>
+<word count="1514">τὴν</word>
+<word count="1417">αὐτοῦ</word>
+<word count="1299">τῆς</word>
+<word count="1284">ὅτι</word>
+<word count="1227">τῷ</word>
+<word count="1208">τῶν</word>
+<word count="1080">οἱ</word
+{% endhighlight %}
+
+> Side Note: These counts are not identical to the counts for the base text, which may be an indication that the underlying texts are not identical. This is a little surprising, so we will be good citizens of the digital humanities community and raise an issue on the [issues list](https://github.com/biblicalhumanities/greek-new-testament/issues/10) so that it can be investigated.
+
+#### Frequency by Lemma
+
+As we mentioned in the first post, ὁ, τοῦ, τὸ, τὸν, τὴν, τῆς, τῷ, τῶν, and οἱ are actually different forms of Greek definite article, which means "the". It takes different forms for gender (masculine, feminine, neuter), case (nominative, genitive, dative, accusative), and number (singular, plural). Suppose we want to treat all of these forms as one word, and do a frequency count based on the underlying word. In the syntax trees, the `lemma` attribute contains the dictionary form of each word. Let's modify query to use the lemma rather than the declined form of each word:
+
+{% highlight xquery lineno %}    
+for $w in //w
+let $text := string($w/@lemma)
+group by $text
+let $count := count($w)
+where $count > 1000
+order by $count descending
+return <word count="{$count}">{ $text }</word>
+{% endhighlight %}
+
+Here are the results of that query, which give the count for each lemma no matter how it is declined in the text:
+
+{% highlight xml lineno %}    
+<?xml version="1.0" encoding="UTF-8"?>
+<word count="19805">ὁ</word>
+<word count="8977">καί</word>
+<word count="5061">αὐτός</word>
+<word count="2896">σύ</word>
+<word count="2767">δέ</word>
+<word count="2737">ἐν</word>
+<word count="2574">ἐγώ</word>
+<word count="2457">εἰμί</word>
+<word count="2335">λέγω</word>
+<word count="1759">εἰς</word>
+<word count="1605">οὐ</word>
+<word count="1408">ὅς</word>
+<word count="1387">οὗτος</word>
+<word count="1308">θεός</word>
+<word count="1295">ὅτι</word>
+<word count="1245">πᾶς</word>
+<word count="1039">γάρ</word>
+<word count="1037">μή</word
+{% endhighlight %}
+
+Now let's modify that to add the class of the word (noun, verb, pronoun, etc.), and generate a complete list. We will also wrap the query in an outer element to make it a well formed XML file:
+
+{% highlight xquery lineno %}    
+<frequency>
+{
+for $w in //w
+let $lemma := $w/@lemma
+let $class := $w/@class
+group by $lemma, $class
+order by count($w) descending
+return 
+   <lemma class="{$class}" count="{count($w)}">
+     {$lemma}
+   </lemma>
+}
+</frequency>
+{% endhighlight %}
+
+Now the results look like this:
+
+{% highlight xml lineno %} 
+<?xml version="1.0" encoding="UTF-8"?>
+<frequency>
+   <lemma class="det" count="19805">ὁ</lemma>
+   <lemma class="conj" count="8187">καί</lemma>
+   <lemma class="pron" count="4976">αὐτός</lemma>
+   <lemma class="pron" count="2896">σύ</lemma>
+   <lemma class="conj" count="2767">δέ</lemma>
+   <lemma class="prep" count="2737">ἐν</lemma>
+   <lemma class="pron" count="2574">ἐγώ</lemma>
+   <lemma class="verb" count="2457">εἰμί</lemma>
+   <lemma class="verb" count="2335">λέγω</lemma>
+   <lemma class="prep" count="1759">εἰς</lemma>
+   <lemma class="adv" count="1537">οὐ</lemma>
+   <lemma class="pron" count="1407">ὅς</lemma>
+   <lemma class="pron" count="1387">οὗτος</lemma>
+   <lemma class="noun" count="1308">θεός</lemma>
+   <lemma class="adj" count="1245">πᾶς</lemma>
+   <lemma class="conj" count="1216">ὅτι</lemma>
+   <lemma class="conj" count="1039">γάρ</lemma>
+   <lemma class="adv" count="946">μή</lemma>
+   !!! SNIP !!!
+{% endhighlight %}
+
+Since this could be useful for other queries, let's save it. The complete file can be found here: [SBLGNT Word Frequency (generated from Lowfat trees)](/datasets/sblgnt-lowfat-word.frequencies.xml)
+
+#### Exploring the Morphology Markup
+
+The format for the Lowfat trees is documented [here](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat). Suppose that documentation did not exist, and we had to write it from scratch.  We could start by using a few queries to summarize how this data is used.  Even for datasets that are documented, this kind of query is often helpful for gaining an understanding of what data is available to be queried.
+
+First, let's remember what words look like in the Lowfat trees:
+
+{% highlight xml lineno %} 
+   <wg nodeId="420240190020020" class="cl" head="true">
+    <w morphId="42024019002"
+       class="verb"
+       role="v"
+       head="true"
+       lemma="λέγω"
+       person="third"
+       number="singular"
+       tense="aorist"
+       voice="active"
+       mood="indicative">εἶπεν</w>
+    <w morphId="42024019003"
+       class="pron"
+       role="io"
+       lemma="αὐτός"
+       case="dative"
+       gender="masculine"
+       number="plural">αὐτοῖς</w>
+  </wg>
+  <w morphId="42024019004"
+     class="pron"
+     lemma="ποῖος"
+     case="accusative"
+     gender="neuter"
+     number="plural">Ποῖα;</w>
+</wg>
+{% endhighlight %}
+
+The set of attributes found on a word depends on the class of the word.  So what attributes can be found on a word?  We can find that with the following query:
+
+{% highlight xquery lineno %}
+for $w-attr in //w/@*
+let $name := name($w-attr)
+group by $name
+return
+    <attribute name="{$name}">
+    </attribute>
+{% endhighlight %}
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<attribute name="number"/>
+<attribute name="discontinuous"/>
+<attribute name="mood"/>
+<attribute name="class"/>
+<attribute name="tense"/>
+<attribute name="voice"/>
+<attribute name="person"/>
+<attribute name="lemma"/>
+<attribute name="head"/>
+<attribute name="case"/>
+<attribute name="morphId"/>
+<attribute name="gender"/>
+<attribute name="role"/>
+{% endhighlight %}
+
+Let's see what the potential values are for each attribute.  We will use the `distinct-values()` function, which does what the name implies: it extracts the set of distinct values from a sequence. 
+
+{% highlight xquery lineno %}
+for $w-attr in //w/@*
+for $name in name($w-attr)
+where $name != 'lemma'
+and $name != 'morphId'
+group by $name
+return
+  <attribute name="{$name}">
+   {
+     distinct-values($w-attr)
+   }
+  </attribute>
+{% endhighlight %}
+
+Here is the result of the above query:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<attribute name="head">true</attribute>
+<attribute name="number">singular plural</attribute>
+<attribute name="case">nominative genitive accusative dative vocative</attribute>
+<attribute name="discontinuous">true</attribute>
+<attribute name="mood">indicative participle infinitive subjunctive imperative optative</attribute>
+<attribute name="role">s v vc p adv o io o2</attribute>
+<attribute name="gender">feminine masculine neuter</attribute>
+<attribute name="class">noun verb det conj pron prep adj adv ptcl num intj</attribute>
+<attribute name="tense">aorist present imperfect future perfect pluperfect</attribute>
+<attribute name="voice">active passive middle</attribute>
+<attribute name="person">third second first</attribute
+{% endhighlight %}
+
+Now let's group these by the class of the word, since each class has a different set of possible attributes.  First, let's create an outer query that groups words by class:
+
+{% highlight xquery lineno %}
+for $w in //w
+let $class := $w/@class
+group by $class
+return
+  <class name="{$class}">
+  </class>
+{% endhighlight %}
+
+This returns the set of classes:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="adv"/>
+<class name="adj"/>
+<class name="pron"/>
+<class name="noun"/>
+<class name="conj"/>
+<class name="verb"/>
+<class name="num"/>
+<class name="ptcl"/>
+<class name="det"/>
+<class name="intj"/>
+<class name="prep"/
+{% endhighlight %}
+
+Within each class, we want to see the attributes used for that class, which is what our previous query did. Let's copy that earlier query into the element constructor for class, with one small modification: the expression `for $w-attr in //w/@*` looks at the attributes for the entire treebank, so we will change it to `for $w-attr in $w/@*` so that it looks only at the words in the group associated with each class:
+
+{% highlight xquery lineno %}
+for $w in //w
+let $class := $w/@class
+group by $class
+return
+  <class name="{$class}">
+   {
+    for $w-attr in $w/@*
+    for $name in name($w-attr)
+    where $name != 'lemma'
+      and $name != 'morphId'
+    group by $name
+    return
+      <attribute name="{$name}">
+       {
+         distinct-values($w-attr)
+       }
+      </attribute>
+   }
+  </class>
+{% endhighlight %}
+
+Here is the result of that query:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="adv">
+   <attribute name="head">true</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">p adv v o</attribute>
+   <attribute name="class">adv</attribute>
+</class>
+<class name="adj">
+   <attribute name="head">true</attribute>
+   <attribute name="number">plural singular</attribute>
+   <attribute name="case">nominative genitive accusative dative vocative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">p o2 adv s o io</attribute>
+   <attribute name="gender">feminine neuter masculine</attribute>
+   <attribute name="class">adj</attribute>
+</class>
+<class name="pron">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="case">genitive accusative dative nominative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">s o io adv p o2</attribute>
+   <attribute name="gender">masculine feminine neuter</attribute>
+   <attribute name="class">pron</attribute>
+</class>
+<class name="noun">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="case">nominative genitive accusative dative vocative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">s p o o2 adv io</attribute>
+   <attribute name="gender">feminine masculine neuter</attribute>
+   <attribute name="class">noun</attribute>
+</class>
+<class name="conj">
+   <attribute name="head">true</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">adv p</attribute>
+   <attribute name="class">conj</attribute>
+</class>
+<class name="verb">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="case">nominative genitive accusative dative vocative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">indicative participle infinitive subjunctive imperative optative</attribute>
+   <attribute name="gender">masculine feminine neuter</attribute>
+   <attribute name="role">v vc adv o p s o2</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist present imperfect future perfect pluperfect</attribute>
+   <attribute name="voice">active passive middle</attribute>
+   <attribute name="person">third second first</attribute>
+</class>
+<class name="num">
+   <attribute name="head">true</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">adv o p s</attribute>
+   <attribute name="class">num</attribute>
+</class>
+<class name="ptcl">
+   <attribute name="head">true</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">s p adv v</attribute>
+   <attribute name="class">ptcl</attribute>
+</class>
+<class name="det">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="case">accusative genitive nominative dative vocative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="role">s</attribute>
+   <attribute name="gender">masculine feminine neuter</attribute>
+   <attribute name="class">det</attribute>
+</class>
+<class name="intj">
+   <attribute name="head">true</attribute>
+   <attribute name="role">s</attribute>
+   <attribute name="class">intj</attribute>
+</class>
+<class name="prep">
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="class">prep</attribute>
+</class>
+{% endhighlight %}
+
+But the attributes and possible values for a Greek verb are depend on whether the verb is finite, an infinitive, or a participle. Let's break that down with another query derived from the previous query:
+
+{% highlight xquery lineno %}
+for $w in //w
+where $w/@class = 'verb'
+let $mood := $w/@mood
+group by $mood
+return
+  <class name="verb" mood="{$mood}">
+    {
+      for $w-attr in $w/@*
+      for $name in name($w-attr)
+      where $name != 'lemma'
+      and $name != 'morphId'
+      group by $name
+      return
+        <attribute name="{$name}">
+          {
+            distinct-values($w-attr)
+          }
+        </attribute>
+    }
+  </class>
+{% endhighlight %}
+
+Here is the result of that query:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="verb" mood="infinitive">
+   <attribute name="head">true</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">infinitive</attribute>
+   <attribute name="role">v o adv vc s o2</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist present perfect future</attribute>
+   <attribute name="voice">active passive middle</attribute>
+</class>
+<class name="verb" mood="indicative">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">indicative</attribute>
+   <attribute name="role">v vc</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist imperfect present future perfect pluperfect</attribute>
+   <attribute name="voice">active passive middle</attribute>
+   <attribute name="person">third second first</attribute>
+</class>
+<class name="verb" mood="subjunctive">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">subjunctive</attribute>
+   <attribute name="role">v vc</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist present perfect</attribute>
+   <attribute name="voice">passive active middle</attribute>
+   <attribute name="person">second third first</attribute>
+</class>
+<class name="verb" mood="optative">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">optative</attribute>
+   <attribute name="role">v vc</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist present</attribute>
+   <attribute name="voice">active middle passive</attribute>
+   <attribute name="person">third first second</attribute>
+</class>
+<class name="verb" mood="imperative">
+   <attribute name="head">true</attribute>
+   <attribute name="number">plural singular</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">imperative</attribute>
+   <attribute name="role">v vc p s</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">aorist present perfect</attribute>
+   <attribute name="voice">active middle passive</attribute>
+   <attribute name="person">second third</attribute>
+</class>
+<class name="verb" mood="participle">
+   <attribute name="head">true</attribute>
+   <attribute name="number">singular plural</attribute>
+   <attribute name="case">nominative genitive accusative dative vocative</attribute>
+   <attribute name="discontinuous">true</attribute>
+   <attribute name="mood">participle</attribute>
+   <attribute name="gender">masculine feminine neuter</attribute>
+   <attribute name="role">vc v adv p o o2 s</attribute>
+   <attribute name="class">verb</attribute>
+   <attribute name="tense">present aorist perfect future</attribute>
+   <attribute name="voice">passive active middle</attribute>
+</class>
+{% endhighlight %}
+
+Looking at these results can tell us quite a bit about Greek verbs and how they are used in the Greek New Testament.
+
+### But wait, there's more!
+
+So far, we have been querying only morphology, but even in these queries, some aspects of syntax are visible. The `discontinuous`, `role`, and `head` attributes describe aspects of syntax, not morphology.  
+
+The next post will start a series on querying syntax, leading up to queries related to [Rikjsbaron's chapter on the Greek Participle](http://www.press.uchicago.edu/ucp/books/book/chicago/S/bo5387752.html).
