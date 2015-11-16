@@ -240,7 +240,7 @@ Let's see what the potential values are for each attribute.  We will use the `di
 
 {% highlight xquery lineno %}
 for $w-attr in //w/@*
-for $name in name($w-attr)
+let $name := name($w-attr)
 where $name != 'lemma'
 and $name != 'morphId'
 group by $name
