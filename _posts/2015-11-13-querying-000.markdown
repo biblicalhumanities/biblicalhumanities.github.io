@@ -15,7 +15,7 @@ These queries are written in [XQuery 3.0](http://www.w3.org/TR/xquery-30/), whic
 
 You can find an XQuery processor at any of these links:
 
-- [BaseX](basex.org)
+- [BaseX](http://basex.org)
 - [eXist](http://exist-db.org/exist/apps/homepage/index.html)
 - [Saxon-HE](http://www.saxonica.com/download/opensource.xml)
 - [xDB](https://community.emc.com/docs/DOC-3155)
