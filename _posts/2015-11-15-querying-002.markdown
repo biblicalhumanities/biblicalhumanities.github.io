@@ -173,6 +173,147 @@ Now the results look like this:
 
 Since this could be useful for other queries, let's save it. The complete file can be found here: [SBLGNT Word Frequency (generated from Lowfat trees)](/datasets/sblgnt-lowfat-word.frequencies.xml)
 
+#### Most frequent verb forms
+
+The order in which Greek verb forms is taught usually bears little resemblance to the frequency with which these forms occur. Let's write a query that finds the most frequent verb forms.
+
+{% highlight xquery lineno %} 
+for $w in //w
+where $w/@class='verb'
+let $text := string($w)
+group by $text
+let $count := count($w)
+order by $count descending
+return 
+  <word count="{$count}">
+    { $text }
+  </word>
+{% endhighlight %}
+
+The results of this query look like this:
+
+{% highlight xml lineno %} 
+<?xml version="1.0" encoding="UTF-8"?>
+<word count="577">εἶπεν</word>
+<word count="570">ἐστιν</word>
+<word count="330">λέγει</word>
+<word count="301">ἦν</word>
+<word count="200">λέγω</word>
+<word count="178">λέγων</word>
+<word count="169">ἐγένετο</word>
+<word count="150">λέγοντες</word>
+<word count="143">ἔστιν</word>
+!!! SNIP !!!
+{% endhighlight %}
+
+Now let's enhance this query in three ways:
+
+- Add the lemma, tense, voice, and mood for each verb form.
+- Add a `rank` attribute that is 1 for the most frequent form, 2 for the second most frequent, etc., setting it in the count clause (`count $rank`).
+- Wrap the individual elements in a <frequency/> element so that it is well-formed XML.
+
+Here is the query with these modifications:
+
+{% highlight xquery lineno %} 
+<frequency>
+  {
+    for $w in //w
+    where $w/@class='verb'
+    let $text := string($w)
+    let $lemma := $w/@lemma
+    let $tense := $w/@tense
+    let $voice := $w/@voice
+    let $mood := $w/@mood
+    group by $text, $lemma, $tense, $voice, $mood
+    let $count := count($w)
+    order by $count descending
+    count $rank
+    return 
+      <word rank="{$rank}"
+            count="{$count}" 
+            lemma="{$lemma}"
+            tense="{$tense}"
+            voice="{$voice}"
+            mood="{$mood}">
+        { $text }
+      </word>
+  }
+</frequency>
+{% endhighlight %}
+
+Now the results look like this:
+
+{% highlight xml lineno %} 
+<?xml version="1.0" encoding="UTF-8"?>
+<frequency>
+   <word rank="1"
+         count="573"
+         lemma="λέγω"
+         tense="aorist"
+         voice="active"
+         mood="indicative">εἶπεν</word>
+   <word rank="2"
+         count="570"
+         lemma="εἰμί"
+         tense="present"
+         voice="active"
+         mood="indicative">ἐστιν</word>
+   <word rank="3"
+         count="330"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="indicative">λέγει</word>
+   <word rank="4"
+         count="301"
+         lemma="εἰμί"
+         tense="imperfect"
+         voice="active"
+         mood="indicative">ἦν</word>
+   <word rank="5"
+         count="198"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="indicative">λέγω</word>
+   <word rank="6"
+         count="178"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="participle">λέγων</word>
+   <word rank="7"
+         count="169"
+         lemma="γίνομαι"
+         tense="aorist"
+         voice="middle"
+         mood="indicative">ἐγένετο</word>
+   <word rank="8"
+         count="150"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="participle">λέγοντες</word>
+   <word rank="9"
+         count="143"
+         lemma="εἰμί"
+         tense="present"
+         voice="active"
+         mood="indicative">ἔστιν</word>
+   <word rank="10"
+         count="117"
+         lemma="εἰμί"
+         tense="future"
+         voice="middle"
+         mood="indicative">ἔσται</word>
+    !!! SNIP !!!
+{% endhighlight %}
+
+Since this data might be useful to someone, let's store the complete result here: [SBLGNT verb form frequency](/datasets/sblgnt-verb-form-frequency.xml).
+
+Perhaps many people would be surprised that two of the ten most common Greek verb forms are participles, and some might be surprised that two of them are middle forms. 
+This means that with traditional Greek instruction, students have to wait quite a while before they recognize some of the most common verb forms.
+
 #### Exploring the Morphology Markup
 
 The format for the Lowfat trees is documented [here](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat). Suppose that documentation did not exist, and we had to write it from scratch.  We could start by using a few queries to summarize how this data is used.  Even for datasets that are documented, this kind of query is often helpful for gaining an understanding of what data is available to be queried.
