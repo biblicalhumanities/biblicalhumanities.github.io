@@ -309,8 +309,6 @@ Now the results look like this:
     !!! SNIP !!!
 {% endhighlight %}
 
-Since this data might be useful to someone, let's store the complete result here: [SBLGNT verb form frequency](/datasets/sblgnt-verb-form-frequency.xml).
-
 Perhaps many people would be surprised that two of the ten most common Greek verb forms are participles, and some might be surprised that two of them are middle forms. 
 This means that with traditional Greek instruction, students have to wait quite a while before they recognize some of the most common verb forms.
 
@@ -647,6 +645,150 @@ Here is the result of that query:
 {% endhighlight %}
 
 Looking at these results can tell us quite a bit about Greek verbs and how they are used in the Greek New Testament.
+
+#### Tayloring output for different verb forms
+
+The previous section shows that the attributes needed to characterize a verb depend on whether it is an infinitive, participle, or finite verb.  Let's use that knowledge to improve the output.  Within the element constructor for `class`, let's add attributes specific to particular verb forms.
+
+{% highlight xquery lineno %}
+<frequency>
+{
+for $w in //w
+where $w/@class='verb'
+let $text := string($w)
+let $lemma := $w/@lemma
+let $tense := $w/@tense
+let $voice := $w/@voice
+let $mood := $w/@mood
+let $person := $w/@person
+let $number := $w/@number
+let $gender := $w/@gender
+let $case := $w/@case
+group by $text, $lemma, $tense, $voice, $mood, 
+         $person, $number, $gender, $case
+let $count := count($w)
+order by $count descending
+count $rank
+return 
+  <word rank="{$rank}"
+        count="{$count}" 
+        lemma="{$lemma}"
+        tense="{$tense}"
+        voice="{$voice}"
+        mood="{$mood}">
+    { 
+      switch ($mood)
+        case "infinitive" return ()
+        case "participle" return (
+             attribute case {$case},  
+             attribute number {$number}, 
+             attribute gender {$gender} )
+        default return ( 
+             attribute person {$person}, 
+             attribute number {$number})
+    }
+    { $text }
+  </word>
+}
+</frequency>
+{% endhighlight %}
+
+Now each verb has all the attributes required to fully describe the form:
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<frequency>
+   <word rank="1"
+         count="573"
+         lemma="λέγω"
+         tense="aorist"
+         voice="active"
+         mood="indicative"
+         person="third"
+         number="singular">εἶπεν</word>
+   <word rank="2"
+         count="570"
+         lemma="εἰμί"
+         tense="present"
+         voice="active"
+         mood="indicative"
+         person="third"
+         number="singular">ἐστιν</word>
+   <word rank="3"
+         count="330"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="indicative"
+         person="third"
+         number="singular">λέγει</word>
+   <word rank="4"
+         count="301"
+         lemma="εἰμί"
+         tense="imperfect"
+         voice="active"
+         mood="indicative"
+         person="third"
+         number="singular">ἦν</word>
+   <word rank="5"
+         count="198"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="indicative"
+         person="first"
+         number="singular">λέγω</word>
+   <word rank="6"
+         count="177"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="participle"
+         case="nominative"
+         number="singular"
+         gender="masculine">λέγων</word>
+   <word rank="7"
+         count="169"
+         lemma="γίνομαι"
+         tense="aorist"
+         voice="middle"
+         mood="indicative"
+         person="third"
+         number="singular">ἐγένετο</word>
+   <word rank="8"
+         count="148"
+         lemma="λέγω"
+         tense="present"
+         voice="active"
+         mood="participle"
+         case="nominative"
+         number="plural"
+         gender="masculine">λέγοντες</word>
+   <word rank="9"
+         count="143"
+         lemma="εἰμί"
+         tense="present"
+         voice="active"
+         mood="indicative"
+         person="third"
+         number="singular">ἔστιν</word>
+   <word rank="10"
+         count="117"
+         lemma="εἰμί"
+         tense="future"
+         voice="middle"
+         mood="indicative"
+         person="third"
+         number="singular">ἔσται</word>
+   <word rank="11"
+         count="114"
+         lemma="εἰμί"
+         tense="present"
+         voice="active"
+         mood="infinitive">εἶναι</word>
+{% endhighlight %}
+
+Since this data might be useful to someone, let's store the complete result here: [SBLGNT verb form frequency](/datasets/sblgnt-verb-form-frequency.xml).
 
 ### But wait, there's more!
 
