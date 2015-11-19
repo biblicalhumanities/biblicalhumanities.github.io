@@ -38,6 +38,7 @@ These are members of the broader community who advise us on resources they provi
 - Giuseppe Celano <celano@informatik.uni-leipzig.de>,  [University of Leipzig](http://www.dh.uni-leipzig.de/wo/)
 - Gregory Crane <gregory.crane@tufts.edu>, Perseus Project / [University of Leipzig](http://www.dh.uni-leipzig.de/wo/)
 - Harry Diakoff <harry.diakoff@gmail.com>,  [Alpheios](http://perseids.org)
+- David Michelson <david.a.michelson@vanderbilt.edu>, [syriaca.org](syriaca.org}, Vanderbilt University
 - Bruce Robertson <broberts@mta.ca>, Mount Allison University - Greek OCR, [Lace](http://heml.mta.ca/lace/catalog)
 - Dirk Roorda <dirk.roorda@dans.knaw.nl>, [Shebanq](https://shebanq.ancient-data.org/), [Data Archiving and Networked Services (DANS)](www.dans.knaw.nl).
 - Nicolai Winther-Nielsen <nwn@dbi.edu>, Dansk Bible Institut, Bible OL
