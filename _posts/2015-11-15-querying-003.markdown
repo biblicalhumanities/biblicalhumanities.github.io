@@ -1,0 +1,1441 @@
+---
+layout: post
+title:  "Querying Biblical Texts: Part 4"
+date:   2015-11-16 14:33:50
+categories: xquery tutorial greek
+---
+
+This is the last in a series on querying Greek texts with
+XQuery. Before you read this, you should consider reading the earlier
+posts:
+
+- [Querying Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
+- [Querying Biblical Texts: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
+- [Querying Biblical Texts: Part 3]({% post_url 2015-11-15-querying-002 %}):  shows a variety of queries that exploit morphology
+
+In this post, we will start doing syntax queries on the Lowfat syntax trees, focusing on participles. 
+
+> NOTE: This talk is also being proposed as a Talk Session at [THATCamp AAR/SBL 2015](http://www.thatcampaarsbl.org/), Friday, 20 November.
+
+> NOTE: The queries in this post came from a practical use case: Micheal Palmer and I needed examples of various uses of the participle for a series of lessons to be taught using living language techniques.  If you want to see the lesson taught using living language techniques, come to [Systematically Generating Examples from a Syntactic Treebank for Internalizing Language](http://greek-language.com/grklinguist/?cat=121), on Sunday, 22 November, in session S22-206 at 1:00 P.M. to 3:30 P.M. 
+
+### Queries on Syntax: Greek Participles
+
+Researching the syntax of a language and internalizing a language in a classroom both need lots of examples, many more examples than are found in most textbooks. A syntax treebank is a crucial tool for finding precisely the examples that are needed. In this post, we will focus on querying Greek participles. The queries here were derived largely by reading through the chapter on participles in Rijksbaron's [The Syntax and Semantics of the Verb in Classical Greek](http://www.press.uchicago.edu/ucp/books/book/chicago/S/bo5387752.html), querying the Lowfat trees to find New Testament examples to illustrate the points he makes, and modifying the queries to identify examples particularly well suited to classroom instruction.
+
+The first step is to look at a participle in a sentence and see how the syntax tree is structured.  Here is an example from Luke 6:8:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Luk6:8:22-6:8:24</cite>
+   <wg nodeId="420060080220030" class="cl" role="s">
+      <w morphId="42006008022" class="conj" lemma="καί">καὶ</w>
+      <wg nodeId="420060080230020" class="cl">
+         <w morphId="42006008023" class="verb" role="adv" 
+            lemma="ἀνίστημι" 
+            tense="aorist"
+            voice="active"
+            mood="participle"
+            case="nominative"
+            gender="masculine"
+            number="singular">ἀναστὰς</w>
+         <w morphId="42006008024" class="verb" role="v" head="true" 
+            lemma="ἵστημι"
+            person="third"
+            number="singular"
+            tense="aorist"
+            voice="active"
+            mood="indicative">ἔστη</w>
+         <pu>.</pu>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+This sentence has three Greek words, which generally require about twice as many English verbs to translate. Most of the action is in the relationship between the two verbs. 
+<table border="1">
+    <tr>
+        <td>καὶ</td>
+        <td>ἀναστὰς</td>
+        <td>ἔστη</td>
+    </tr>
+    <tr>
+        <td>and</td>
+        <td>he rose (and)</td>
+        <td>he stood there</td>
+    </tr>
+</table>
+
+A great deal of the meaning of Greek sentences lies in the syntactic relationships among words, and the verbs play a central role. Syntax trees represent this meaning with structure and attributes. In the syntax tree, the `class`, `role`, and `head` attributes, together with the hierarchical relationships in the tree, describe the syntactic relationships. The main verb is ἔστη, so the `role` is `v`.  The participle is adverbial, so the `role` is `adv`. Because the participle is adverbial, you can remove it and still have a perfectly good sentence, καὶ ἔστη, meaning "he stood there". The adverbial participle paints the scene for the main verb - in this case, it is aorist, so it describes something that happened before the main verb, the man rising up to stand there.  
+
+###  Exploring Syntax Markup for Participles
+
+The first step in querying any corpus is to explore it and become familiar with the information it contains. For starters, we might want to know what `role`s a participle can have:
+
+{% highlight xquery lineno %}
+distinct-values(//w[@class='verb' and @mood='participle']/@role)
+{% endhighlight %}
+
+Here is the result of that query:
+
+{% highlight xml lineno %}
+v vc adv p o o2
+{% endhighlight %}
+
+To fully understand the meaning of these `role` attributes, you would have to [read the documentation](https://github.com/biblicalhumanities/greek-new-testament/blob/master/syntax-trees/sblgnt/doc/SBLGNT%20Treebank%20Documentation.pdf), but here we're going to focus on the meaning they have when they describe participles:
+
+- Supplementary participles are objects of other verbs, so `role` = `o`
+- For circumstantial participles (also called adverbial participles), `role` = `adv`
+- For genitive absolutes (free participles), `role` = `v` or `vc` (and `case` = `genitive`).
+- For participles used as predicate adjectives, `role` can be `o2`
+
+Sometimes this `role` attribute occurs directly on the participle, sometimes it occurs on the `wg` element that contains it, sometimes both the participle and the word group that contains it have roles, depending on the interpretation of the sentence.
+
+Let's look at some examples of each of these kinds of participles. 
+
+#### Supplementary Participles
+
+First we will look at the supplementary participle.  In this usage, the participle is an object of the main verb. Let's write a few queries to find supplementary participles.  This query finds participles where `role` is `o`, or "object":
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and $word/@role='o'
+return $word
+{% endhighlight %}
+
+But it would be more helpful to see the entire sentence in which the participle occurs, so let's change the return clause to return `$word/ancestor::sentence`:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and $word/@role='o'
+return $word/ancestor::sentence
+{% endhighlight %}
+
+And we also need to look for `role` in the word group that the participle is found in, so let's add the condition `or $word/parent::wg[@role='o'`:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and ($word/@role='o' or $word/parent::wg[@role='o'])
+return $word/ancestor::sentence
+{% endhighlight %}
+
+Finally, let's sort the results by the number of words in the sentence, so that the shortest examples occur first, by adding the clause `order by count($word//w)`:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and ($word/@role='o' or $word/parent::wg[@role='o'])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first result, which is the shortest example, from James 5:11. 
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Jms5:11:1-5:11:4</cite>
+   <wg nodeId="590050110010040" class="cl" role="s">
+      <w morphId="59005011001" class="ptcl" lemma="ἰδού">ἰδοὺ</w>
+      <wg nodeId="590050110020030" class="cl" head="true">
+         <w morphId="59005011002"
+         class="verb"
+         role="v"
+         head="true"
+         lemma="μακαρίζω"
+         person="first"
+         number="plural"
+         tense="present"
+         voice="active"
+         mood="indicative">μακαρίζομεν</w>
+         <wg nodeId="590050110030020" class="np" role="o">
+            <w morphId="59005011003"
+            class="det"
+            lemma="ὁ"
+            case="accusative"
+            gender="masculine"
+            number="plural">τοὺς</w>
+            <w morphId="59005011004"
+            class="verb"
+            head="true"
+            lemma="ὑπομένω"
+            tense="aorist"
+            voice="active"
+            mood="participle"
+            case="accusative"
+            gender="masculine"
+            number="plural">ὑπομείναντας</w>
+            <pu>·</pu>
+         </wg>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+
+In this sentence, the participle ὑπομείναντας is the object of the verb μακαρίζομεν:
+
+<table border="1">
+    <tr>
+        <td>ἰδοὺ</td>
+        <td>μακαρίζομεν</td>
+        <td>τοὺς ὑπομείναντας</td>
+    </tr>
+    <tr>
+        <td>Look!</td>
+        <td>we consider blessed</td>
+        <td>the ones who have endured</td>
+    </tr>
+</table>
+
+In this case, the participle is accusative because it is the object of the main verb μακαρίζομεν and the subjects of the verbs are not the same - the people who have endured are not the same people who are considering them blessed. 
+
+If the subjects of main verb and participle are the same the participle is nominative. We should be able to find examples of this by adding the condition `and $word/@case='nominative'` to the previous query:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and $word/@case='nominative'
+  and ($word/@role='o' or $word/parent::wg[@role='o'])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first result in the list:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Act12:16:1-12:16:5</cite>
+   <wg nodeId="440120160020050" class="cl" role="s">
+      <w morphId="44012016002"
+      class="conj"
+      lemma="δέ"
+      discontinuous="true">δὲ</w>
+      <wg nodeId="440120160010040" class="cl">
+         <wg nodeId="440120160010020" class="np" role="s">
+            <w morphId="44012016001"
+            class="det"
+            lemma="ὁ"
+            case="nominative"
+            gender="masculine"
+            number="singular">ὁ</w>
+            <w morphId="44012016003"
+            class="noun"
+            head="true"
+            lemma="πέτρος"
+            case="nominative"
+            gender="masculine"
+            number="singular">Πέτρος</w>
+         </wg>
+         <w morphId="44012016004"
+         class="verb"
+         role="v"
+         head="true"
+         lemma="ἐπιμένω"
+         person="third"
+         number="singular"
+         tense="imperfect"
+         voice="active"
+         mood="indicative">ἐπέμενεν</w>
+         <w morphId="44012016005"
+         class="verb"
+         role="o"
+         lemma="κρούω"
+         tense="present"
+         voice="active"
+         mood="participle"
+         case="nominative"
+         gender="masculine"
+         number="singular">κρούων</w>
+         <pu>·</pu>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+The first word in this is marked `discontinuous`, because it is a postpositive conjunction.  In the following table, we leave it in syntax-tree order, which differs from the order it appears in the actual sentence in a few places so that it can represent the logical structure:
+
+
+<table border="1">
+    <tr>
+        <td>δὲ</td>
+        <td>ὁ Πέτρος</td>
+        <td>ἐπέμενεν</td>
+        <td>κρούων</td>
+    </tr>
+    <tr>
+        <td>but</td>
+        <td>Peter</td>
+        <td>continued</td>
+        <td>knocking</td>
+    </tr>
+</table>
+
+
+In this sentence, the participle κρούων is the object of the verb ἐπέμενεν - Peter continued knocking. It is nominative because Peter is the subject of both verbs (continue and knock).  
+
+The syntax trees are helpful when we need to see all the details, but cumbersome when we want to list examples as text.  We can convert the trees to text with a function. This function modifies the syntax tree for each sentence as follows:
+
+- The variable $w iterates over the words in the sentence tree, in sentence order (putting discontinuous words in their right place)
+- A space is inserted before each word
+- Each word is converted to a string, followed by any punctuation that immediately follows the word
+
+Here is the function:
+
+{% highlight xquery lineno %}
+declare function local:straight-text($sentence)
+{
+ <sentence>
+    { attribute cite { $sentence/cite } }
+    <p>
+     {
+       for $w in $sentence//w
+       order by $w/@morphId
+       return (
+         " ", concat(string($w),string($w/following-sibling::*[1][name() = 'pu']))
+       )
+     }
+    </p>
+ </sentence>
+};
+{% endhighlight %}
+
+Now we can call this function in the `return` clause to return the text without the entire syntax tree:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and $word/@case='nominative'
+  and ($word/@role='o' or $word/parent::wg[@role='o'])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Because the query requires the participle to be nominative, the
+subject of each participle should be the same as the subject of the
+main verb.  
+
+Here are the first results from our query, represented as sentence text.
+
+{% highlight xml lineno %}
+<?xml version="1.0" encoding="UTF-8"?>
+<sentence cite="Act12:16:1-12:16:5">
+   <p> ὁ δὲ Πέτρος ἐπέμενεν κρούων·</p>
+</sentence>
+<sentence cite="Act21:32:10-21:32:21">
+   <p> οἱ δὲ ἰδόντες τὸν χιλίαρχον καὶ τοὺς στρατιώτας ἐπαύσαντο
+   τύπτοντες τὸν Παῦλον.</p>
+</sentence>
+<sentence cite="Gal3:1:1-3:1:13">
+   <p> Ὦ ἀνόητοι Γαλάται, τίς ὑμᾶς ἐβάσκανεν, οἷς κατ’ ὀφθαλμοὺς
+    Ἰησοῦς Χριστὸς προεγράφη ἐσταυρωμένος;</p>
+</sentence>
+<sentence cite="Luk7:45:1-7:45:15">
+   <p> φίλημά μοι οὐκ ἔδωκας· αὕτη δὲ ἀφ’ ἧς εἰσῆλθον οὐ διέλιπεν
+   καταφιλοῦσά μου τοὺς πόδας.</p>
+</sentence>
+<sentence cite="Act5:42:1-5:42:17">
+   <p> πᾶσάν τε ἡμέραν ἐν τῷ ἱερῷ καὶ κατ’ οἶκον οὐκ ἐπαύοντο
+   διδάσκοντες καὶ εὐαγγελιζόμενοι τὸν χριστὸν Ἰησοῦν.</p>
+</sentence>
+<sentence cite="Jhn8:7:1-8:7:18">
+   <p> ὡς δὲ ἐπέμενον ἐρωτῶντες αὐτόν, ἀνακύψας εἶπεν πρὸς αὐτούς Ὁ
+   ἀναμάρτητος ὑμῶν πρῶτον ἐπ᾿ αὐτὴν τὸν λίθον βαλέτω</p>
+</sentence>
+<sentence cite="Mat6:16:1-6:16:19">
+   <p> Ὅταν δὲ νηστεύητε, μὴ γίνεσθε ὡς οἱ ὑποκριταὶ σκυθρωποί,
+   ἀφανίζουσιν γὰρ τὰ πρόσωπα αὐτῶν ὅπως φανῶσιν τοῖς ἀνθρώποις
+   νηστεύοντες·</p>
+</sentence>
+<sentence cite="Luk5:4:1-5:4:19">
+   <p> ὡς δὲ ἐπαύσατο λαλῶν, εἶπεν πρὸς τὸν Σίμωνα· Ἐπανάγαγε εἰς τὸ
+   βάθος καὶ χαλάσατε τὰ δίκτυα ὑμῶν εἰς ἄγραν.</p>
+</sentence>
+{% endhighlight %}
+
+Now let's change the query to look only at supplementary participles where the participle's case is not nominative (`$word/@case!='nominative'`):
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and $word/@case!='nominative'
+  and ($word/@role='o' or $word/parent::wg[@role='o'])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here are the first results from the query:
+
+{% highlight xml lineno %}
+<sentence cite="Jms5:11:1-5:11:4">
+   <p> ἰδοὺ μακαρίζομεν τοὺς ὑπομείναντας·</p>
+</sentence>
+<sentence cite="Mat22:10:17-22:10:21">
+   <p> καὶ ἐπλήσθη ὁ γάμος ἀνακειμένων.</p>
+</sentence>
+<sentence cite="Heb12:25:1-12:25:5">
+   <p> Βλέπετε μὴ παραιτήσησθε τὸν λαλοῦντα·</p>
+</sentence>
+<sentence cite="Mrk16:17:1-16:17:6">
+   <p> σημεῖα δὲ τοῖς πιστεύσασιν ταῦτα παρακολουθήσει,</p>
+</sentence>
+<sentence cite="Luk11:25:1-11:25:6">
+   <p> καὶ ἐλθὸν εὑρίσκει σεσαρωμένον καὶ κεκοσμημένον.</p>
+</sentence>
+<sentence cite="Luk22:12:1-22:12:6">
+   <p> κἀκεῖνος ὑμῖν δείξει ἀνάγαιον μέγα ἐστρωμένον·</p>
+</sentence>
+<sentence cite="Jhn18:21:4-18:21:9">
+   <p> ἐρώτησον τοὺς ἀκηκοότας τί ἐλάλησα αὐτοῖς·</p>
+</sentence>
+<sentence cite="Mat8:16:1-8:16:7">
+   <p> Ὀψίας δὲ γενομένης προσήνεγκαν αὐτῷ δαιμονιζομένους
+   πολλούς·</p>
+</sentence>
+<sentence cite="Mat12:44:10-12:44:16">
+   <p> καὶ ἐλθὸν εὑρίσκει σχολάζοντα σεσαρωμένον καὶ κεκοσμημένον.</p>
+</sentence>
+<sentence cite="Luk24:12:15-24:12:21">
+   <p> καὶ ἀπῆλθεν πρὸς αὑτὸν θαυμάζων τὸ γεγονός.</p>
+</sentence>
+{% endhighlight %}
+
+#### Circumstantial Participles
+
+A circumstantial participle describes a state of affairs in which the main verb occurs. The following query finds circumstantial participles (`role` = `adv`):
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+  and ($word/@role='adv' or $word/parent::wg[@role='adv'])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first result:
+
+{% highlight xml lineno %}
+<sentence>
+      <cite>Mrk14:72:26-14:72:28</cite>
+      <wg nodeId="410140720260030" class="cl" role="s">
+         <w morphId="41014072026" class="conj" lemma="καί">καὶ</w>
+         <wg nodeId="410140720270020" class="cl">
+            <w morphId="41014072027"
+            class="verb"
+            role="adv"
+            lemma="ἐπιβάλλω"
+            tense="aorist"
+            voice="active"
+            mood="participle"
+            case="nominative"
+            gender="masculine"
+            number="singular">ἐπιβαλὼν</w>
+            <w morphId="41014072028"
+            class="verb"
+            role="v"
+            head="true"
+            lemma="κλαίω"
+            person="third"
+            number="singular"
+            tense="imperfect"
+            voice="active"
+            mood="indicative">ἔκλαιεν</w>
+            <pu>.</pu>
+         </wg>
+      </wg>
+   </sentence>
+{% endhighlight %}
+
+The rooster just crowed three times, Peter remembers that Jesus said he would betray him. The main verb is ἔκλαιεν, "he wept".  The participle ἐπιβαλὼν tells us the circumstances surrounding this weeping: Peter thought about what Jesus had said, then he wept.
+
+<table border="1">
+    <tr>
+       <td>καὶ</td>
+       <td>ἐπιβαλὼν</td>
+       <td>ἔκλαιεν</td>
+    </tr>
+    <tr>
+       <td>and</td>
+       <td>when he thought about it</td>
+       <td>he wept</td>
+    </tr>
+</table>
+
+
+
+Here are the first results from the query:
+
+{% highlight xml lineno %}
+<sentence cite="Mrk14:72:26-14:72:28">
+   <p> καὶ ἐπιβαλὼν ἔκλαιεν.</p>
+</sentence>
+<sentence cite="Luk6:8:22-6:8:24">
+   <p> καὶ ἀναστὰς ἔστη.</p>
+</sentence>
+<sentence cite="Luk11:37:12-11:37:14">
+   <p> εἰσελθὼν δὲ ἀνέπεσεν.</p>
+</sentence>
+<sentence cite="Act8:27:1-8:27:3">
+   <p> καὶ ἀναστὰς ἐπορεύθη,</p>
+</sentence>
+<sentence cite="1Co7:18:1-7:18:3">
+   <p> περιτετμημένος τις ἐκλήθη;</p>
+</sentence>
+<sentence cite="Heb13:5:4-13:5:6">
+   <p> ἀρκούμενοι τοῖς παροῦσιν·</p>
+</sentence>
+<sentence cite="Mat9:9:19-9:9:22">
+   <p> καὶ ἀναστὰς ἠκολούθησεν αὐτῷ.</p>
+</sentence>
+<sentence cite="Mat16:4:17-16:4:20">
+   <p> καὶ καταλιπὼν αὐτοὺς ἀπῆλθεν.</p>
+</sentence>
+<sentence cite="Mrk2:14:17-2:14:20">
+   <p> καὶ ἀναστὰς ἠκολούθησεν αὐτῷ.</p>
+</sentence>
+<sentence cite="Mrk12:12:17-12:12:20">
+   <p> καὶ ἀφέντες αὐτὸν ἀπῆλθον.</p>
+</sentence>
+<sentence cite="Luk9:55:1-9:55:4">
+   <p> στραφεὶς δὲ ἐπετίμησεν αὐτοῖς.</p>
+</sentence>
+<sentence cite="Luk20:24:9-20:24:12">
+   <p> ἀποκριθέντες δὲ εἶπαν· Καίσαρος.</p>
+</sentence>
+{% endhighlight %}
+
+
+#### Genitive Absolutes
+
+A genitive absolute participle has no direct syntactic relation to the main verb,  In the Lowfat trees, the `role` of a genitive absolute is `v` or `vc`, and the `case` is genitive.  The following query finds sentences with genitive absolutes:
+
+{% highlight xquery lineno %}
+for $word in //w
+where $word/@mood='participle' 
+ and $word/@case='genitive'
+ and ($word/@role=('v','vc') or $word/parent::wg[@role=('v','vc')])
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first result:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Luk8:23:1-8:23:4</cite>
+   <wg nodeId="420080230020040" class="cl" role="s">
+      <w morphId="42008023002"
+      class="conj"
+      lemma="δέ"
+      discontinuous="true">δὲ</w>
+      <wg nodeId="420080230010030" class="cl">
+         <wg nodeId="420080230010020" class="cl">
+            <w morphId="42008023001"
+            class="verb"
+            role="v"
+            head="true"
+            lemma="πλέω"
+            tense="present"
+            voice="active"
+            mood="participle"
+            case="genitive"
+            gender="masculine"
+            number="plural">πλεόντων</w>
+            <w morphId="42008023003"
+            class="pron"
+            role="s"
+            lemma="αὐτός"
+            case="genitive"
+            gender="masculine"
+            number="plural">αὐτῶν</w>
+         </wg>
+         <w morphId="42008023004"
+         class="verb"
+         head="true"
+         lemma="ἀφυπνόω"
+         person="third"
+         number="singular"
+         tense="aorist"
+         voice="active"
+         mood="indicative">ἀφύπνωσεν</w>
+         <pu>.</pu>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+The participle πλεόντων means "as they were sailing", the main verb  ἀφύπνωσεν means "he fell asleep". The two statements are not syntacticaly connected to each other.
+
+<table border="1">
+    <tr>
+       <td>πλεόντων δὲ αὐτῶν</td>
+       <td>ἀφύπνωσεν</td>
+    </tr>
+    <tr>
+       <td>and as they were sailing</td>
+       <td>he fell asleep</td>
+    </tr>
+</table>
+
+Here are the first results of the query:
+
+
+{% highlight xml lineno %}
+<sentence cite="Luk8:23:1-8:23:4">
+   <p> πλεόντων δὲ αὐτῶν ἀφύπνωσεν.</p>
+</sentence>
+<sentence cite="Mat14:23:12-14:23:17">
+   <p> ὀψίας δὲ γενομένης μόνος ἦν ἐκεῖ.</p>
+</sentence>
+<sentence cite="Mat8:16:1-8:16:7">
+   <p> Ὀψίας δὲ γενομένης προσήνεγκαν αὐτῷ δαιμονιζομένους
+   πολλούς·</p>
+</sentence>
+<sentence cite="Mat9:33:1-9:33:7">
+   <p> καὶ ἐκβληθέντος τοῦ δαιμονίου ἐλάλησεν ὁ κωφός.</p>
+</sentence>
+<sentence cite="Mrk14:17:1-14:17:7">
+   <p> Καὶ ὀψίας γενομένης ἔρχεται μετὰ τῶν δώδεκα.</p>
+</sentence>
+<sentence cite="Luk22:60:10-22:60:16">
+   <p> καὶ παραχρῆμα ἔτι λαλοῦντος αὐτοῦ ἐφώνησεν ἀλέκτωρ.</p>
+</sentence>
+<sentence cite="Jhn8:30:1-8:30:7">
+   <p> ταῦτα αὐτοῦ λαλοῦντος πολλοὶ ἐπίστευσαν εἰς αὐτόν.</p>
+</sentence>
+<sentence cite="Jhn21:11:18-21:11:24">
+   <p> καὶ τοσούτων ὄντων οὐκ ἐσχίσθη τὸ δίκτυον.</p>
+</sentence>
+<sentence cite="Gal5:8:1-5:8:7">
+   <p> ἡ πεισμονὴ οὐκ ἐκ τοῦ καλοῦντος ὑμᾶς.</p>
+</sentence>
+<sentence cite="1Jn2:26:1-2:26:7">
+   <p> Ταῦτα ἔγραψα ὑμῖν περὶ τῶν πλανώντων ὑμᾶς.</p>
+</sentence>
+<sentence cite="Mat5:1:9-5:1:16">
+   <p> καὶ καθίσαντος αὐτοῦ προσῆλθαν αὐτῷ οἱ μαθηταὶ αὐτοῦ·</p>
+</sentence>
+{% endhighlight %}
+
+#### Attributive Participles
+
+An attributive participle modifies a noun in a noun phrase. In the
+Lowfat trees, it is always head of its phrase. The following query
+finds attributive participles:
+
+{% highlight xquery lineno %}
+for $word in //wg[@class='np']/w
+where $word/@mood='participle' 
+  and $word/@head='true'
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first result:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Rom8:33:6-8:33:8</cite>
+   <wg nodeId="450080330060030" class="cl" role="s">
+      <w morphId="45008033006"
+         class="noun"
+         role="s"
+         lemma="θεός"
+         case="nominative"
+         gender="masculine"
+         number="singular">θεὸς</w>
+      <wg nodeId="450080330070020" class="np" role="p" head="true">
+         <w morphId="45008033007"
+            class="det"
+            lemma="ὁ"
+            case="nominative"
+            gender="masculine"
+            number="singular">ὁ</w>
+         <w morphId="45008033008"
+            class="verb"
+            head="true"
+            lemma="δικαιόω"
+            tense="present"
+            voice="active"
+            mood="participle"
+            case="nominative"
+            gender="masculine"
+            number="singular">δικαιῶν</w>
+         <pu>·</pu>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+An attributive participle describes the associated noun:
+
+<table border="1">
+    <tr>
+       <td>θεὸς</td>   
+       <td></td> 
+       <td>ὁ δικαιῶν·</td>
+    </tr>
+    <tr>
+       <td>God</td>
+       <td>(is)</td>
+       <td>the one who justifies</td>
+    </tr>
+</table>
+
+Here are the first results of the query:
+
+
+{% highlight xml lineno %}
+<sentence cite="Rom8:33:6-8:33:8">
+   <p> θεὸς ὁ δικαιῶν·</p>
+</sentence>
+<sentence cite="Rom8:34:1-8:34:3">
+   <p> τίς ὁ κατακρινῶν;</p>
+</sentence>
+<sentence cite="Heb13:5:4-13:5:6">
+   <p> ἀρκούμενοι τοῖς παροῦσιν·</p>
+</sentence>
+<sentence cite="Jms5:11:1-5:11:4">
+   <p> ἰδοὺ μακαρίζομεν τοὺς ὑπομείναντας·</p>
+</sentence>
+<sentence cite="Mrk4:3:2-4:3:6">
+   <p> ἰδοὺ ἐξῆλθεν ὁ σπείρων σπεῖραι.</p>
+</sentence>
+<sentence cite="Mrk4:14:1-4:14:5">
+   <p> ὁ σπείρων τὸν λόγον σπείρει.</p>
+</sentence>
+<sentence cite="1Co14:4:6-14:4:10">
+   <p> ὁ δὲ προφητεύων ἐκκλησίαν οἰκοδομεῖ.</p>
+</sentence>
+<sentence cite="1Tm5:6:1-5:6:5">
+   <p> ἡ δὲ σπαταλῶσα ζῶσα τέθνηκεν.</p>
+</sentence>
+<sentence cite="Heb12:25:1-12:25:5">
+   <p> Βλέπετε μὴ παραιτήσησθε τὸν λαλοῦντα·</p>
+</sentence>
+<sentence cite="Rev22:17:9-22:17:13">
+   <p> καὶ ὁ ἀκούων εἰπάτω· Ἔρχου·</p>
+</sentence>
+<sentence cite="Mat5:4:1-5:4:6">
+   <p> μακάριοι οἱ πενθοῦντες, ὅτι αὐτοὶ παρακληθήσονται.</p>
+</sentence>
+<sentence cite="Mrk16:6:7-16:6:12">
+   <p> Ἰησοῦν ζητεῖτε τὸν Ναζαρηνὸν τὸν ἐσταυρωμένον·</p>
+</sentence>
+<sentence cite="Mrk16:17:1-16:17:6">
+   <p> σημεῖα δὲ τοῖς πιστεύσασιν ταῦτα παρακολουθήσει,</p>
+</sentence>
+<sentence cite="Jhn18:21:4-18:21:9">
+   <p> ἐρώτησον τοὺς ἀκηκοότας τί ἐλάλησα αὐτοῖς·</p>
+</sentence>
+<sentence cite="2Co10:17:1-10:17:6">
+   <p> Ὁ δὲ καυχώμενος ἐν κυρίῳ καυχάσθω·</p>
+</sentence>
+<sentence cite="1Pe2:7:1-2:7:6">
+   <p> ὑμῖν οὖν ἡ τιμὴ τοῖς πιστεύουσιν·</p>
+</sentence>
+{% endhighlight %}
+                
+#### Periphrastic Participles
+
+In a periphrastic participle, an auxilliary verb, usually εἰμί or ἔχω, combines with the participle.  Both verbs together have the force of a single participle.  The following query finds periphrastic participles in the Lowfat treebank:
+
+{% highlight xquery lineno %}
+for $wg in //wg
+where $wg/w[@mood='indicative' and @lemma=('εἰμί', 'ἔχω' )]
+for $word in $wg/w[@mood='participle']
+where $word/@head='true'
+let $sentence := $word/ancestor::sentence
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here is the first result:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>1Co4:8:1-4:8:3</cite>
+   <wg nodeId="460040080010030" class="cl" role="s">
+      <w morphId="46004008001" class="adv" role="adv" lemma="ἤδη">Ἤδη</w>
+      <wg nodeId="460040080020020" class="vp" role="v" head="true">
+         <w morphId="46004008002"
+            class="verb"
+            head="true"
+            lemma="κορέννυμι"
+            tense="perfect"
+            voice="passive"
+            mood="participle"
+            case="nominative"
+            gender="masculine"
+            number="plural">κεκορεσμένοι</w>
+         <w morphId="46004008003"
+            class="verb"
+            lemma="εἰμί"
+            person="second"
+            number="plural"
+            tense="present"
+            voice="active"
+            mood="indicative">ἐστέ</w>
+         <pu>,</pu>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+In this example, κεκορεσμένοι+ἐστέ combine to express the thought "you have become satisfied".
+
+<table border="1">
+    <tr>
+       <td> Ἤδη</td>   
+       <td>κεκορεσμένοι ἐστέ</td> 
+    </tr>
+    <tr>
+       <td>Already</td>
+       <td>You have become satisfied</td>
+    </tr>
+</table>
+
+Here are the first results:
+
+{% highlight xml lineno %}
+<sentence cite="1Co4:8:1-4:8:3">
+   <p> Ἤδη κεκορεσμένοι ἐστέ,</p>
+</sentence>
+<sentence cite="Luk11:14:1-11:14:5">
+   <p> Καὶ ἦν ἐκβάλλων δαιμόνιον κωφόν·</p>
+</sentence>
+<sentence cite="1Co14:9:16-14:9:20">
+   <p> ἔσεσθε γὰρ εἰς ἀέρα λαλοῦντες.</p>
+</sentence>
+<sentence cite="Act12:20:1-12:20:6">
+   <p> Ἦν δὲ θυμομαχῶν Τυρίοις καὶ Σιδωνίοις·</p>
+</sentence>
+<sentence cite="Luk4:31:8-4:31:14">
+   <p> καὶ ἦν διδάσκων αὐτοὺς ἐν τοῖς σάββασιν·</p>
+</sentence>
+<sentence cite="Act8:1:1-8:1:7">
+   <p> Σαῦλος δὲ ἦν συνευδοκῶν τῇ ἀναιρέσει αὐτοῦ.</p>
+</sentence>
+<sentence cite="1Co11:13:5-11:13:11">
+   <p> πρέπον ἐστὶν γυναῖκα ἀκατακάλυπτον τῷ θεῷ προσεύχεσθαι;</p>
+</sentence>
+<sentence cite="Eph2:8:1-2:8:7">
+   <p> τῇ γὰρ χάριτί ἐστε σεσῳσμένοι διὰ πίστεως·</p>
+</sentence>
+<sentence cite="Heb2:13:1-2:13:7">
+   <p> καὶ πάλιν· Ἐγὼ ἔσομαι πεποιθὼς ἐπ’ αὐτῷ·</p>
+</sentence>
+<sentence cite="Luk1:22:15-1:22:22">
+   <p> καὶ αὐτὸς ἦν διανεύων αὐτοῖς, καὶ διέμενεν κωφός.</p>
+</sentence>
+<sentence cite="Luk4:44:1-4:44:8">
+   <p> καὶ ἦν κηρύσσων εἰς τὰς συναγωγὰς τῆς Ἰουδαίας.</p>
+</sentence>
+<sentence cite="Luk23:15:9-23:15:16">
+   <p> καὶ ἰδοὺ οὐδὲν ἄξιον θανάτου ἐστὶν πεπραγμένον αὐτῷ·</p>
+</sentence>
+<sentence cite="Act2:13:1-2:13:8">
+   <p> ἕτεροι δὲ διαχλευάζοντες ἔλεγον ὅτι Γλεύκους μεμεστωμένοι
+   εἰσίν.</p>
+</sentence>
+<sentence cite="Rom7:14:8-7:14:15">
+   <p> ἐγὼ δὲ σάρκινός εἰμι, πεπραμένος ὑπὸ τὴν ἁμαρτίαν.</p>
+</sentence>
+<sentence cite="1Co7:29:1-7:29:8">
+   <p> τοῦτο δέ φημι, ἀδελφοί, ὁ καιρὸς συνεσταλμένος ἐστίν·</p>
+</sentence>
+<sentence cite="Mat10:22:1-10:22:9">
+   <p> καὶ ἔσεσθε μισούμενοι ὑπὸ πάντων διὰ τὸ ὄνομά μου·</p>
+</sentence>
+<sentence cite="Mrk1:33:1-1:33:9">
+   <p> καὶ ἦν ὅλη ἡ πόλις ἐπισυνηγμένη πρὸς τὴν θύραν.</p>
+</sentence>
+<sentence cite="Mrk2:18:1-2:18:9">
+   <p> Καὶ ἦσαν οἱ μαθηταὶ Ἰωάννου καὶ οἱ Φαρισαῖοι νηστεύοντες.</p>
+</sentence>
+{% endhighlight %}
+
+###  Tayloring Examples for Teaching or Textbooks
+
+When teaching or writing textbooks, the kinds of examples that are needed can be highly specific.  For instance, in a living language classroom, you may want to start out by introducing short sentences that have a lot of participles and not much else.
+
+The following query finds queries with at least 3 participles, sorted by length:
+
+{% highlight xquery lineno %}
+for $sentence in //sentence
+where count($sentence//w[@mood='participle']) > 2
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here is the first example, which has one circumstantial participle and two supplementary participles:
+
+{% highlight xml lineno %}
+<sentence>
+   <cite>Luk11:25:1-11:25:6</cite>
+   <wg nodeId="420110250010060" class="cl" role="s">
+      <w morphId="42011025001" class="conj" lemma="καί">καὶ</w>
+      <wg nodeId="420110250020050" class="cl">
+         <w morphId="42011025002"
+         class="verb"
+         role="adv"
+         lemma="ἔρχομαι"
+         tense="aorist"
+         voice="active"
+         mood="participle"
+         case="nominative"
+         gender="neuter"
+         number="singular">ἐλθὸν</w>
+         <w morphId="42011025003"
+         class="verb"
+         role="v"
+         head="true"
+         lemma="εὑρίσκω"
+         person="third"
+         number="singular"
+         tense="present"
+         voice="active"
+         mood="indicative">εὑρίσκει</w>
+         <wg nodeId="420110250040030" class="cl" role="o">
+            <w morphId="42011025004"
+            class="verb"
+            head="true"
+            lemma="σαρόω"
+            tense="perfect"
+            voice="passive"
+            mood="participle"
+            case="accusative"
+            gender="masculine"
+            number="singular">σεσαρωμένον</w>
+            <w morphId="42011025005" class="conj" lemma="καί">καὶ</w>
+            <w morphId="42011025006"
+            class="verb"
+            lemma="κοσμέω"
+            tense="perfect"
+            voice="passive"
+            mood="participle"
+            case="accusative"
+            gender="masculine"
+            number="singular">κεκοσμημένον</w>
+            <pu>.</pu>
+         </wg>
+      </wg>
+   </wg>
+</sentence>
+{% endhighlight %}
+
+Here are the first results, with quite a few sentences that are useful for introducing the participle:
+
+{% highlight xml lineno %}
+<sentence cite="Luk11:25:1-11:25:6">
+   <p> καὶ ἐλθὸν εὑρίσκει σεσαρωμένον καὶ κεκοσμημένον.</p>
+</sentence>
+<sentence cite="1Co4:12:7-4:13:2">
+   <p> λοιδορούμενοι εὐλογοῦμεν, διωκόμενοι ἀνεχόμεθα, δυσφημούμενοι
+   παρακαλοῦμεν·</p>
+</sentence>
+<sentence cite="Mat12:44:10-12:44:16">
+   <p> καὶ ἐλθὸν εὑρίσκει σχολάζοντα σεσαρωμένον καὶ κεκοσμημένον.</p>
+</sentence>
+<sentence cite="Act21:2:1-21:2:8">
+   <p> καὶ εὑρόντες πλοῖον διαπερῶν εἰς Φοινίκην ἐπιβάντες
+   ἀνήχθημεν.</p>
+</sentence>
+<sentence cite="Mrk16:16:1-16:16:9">
+   <p> ὁ πιστεύσας καὶ βαπτισθεὶς σωθήσεται, ὁ δὲ ἀπιστήσας
+   κατακριθήσεται.</p>
+</sentence>
+<sentence cite="Jms1:6:7-1:6:15">
+   <p> ὁ γὰρ διακρινόμενος ἔοικεν κλύδωνι θαλάσσης ἀνεμιζομένῳ καὶ
+   ῥιπιζομένῳ·</p>
+</sentence>
+<sentence cite="Mrk16:10:1-16:10:10">
+   <p> ἐκείνη πορευθεῖσα ἀπήγγειλεν τοῖς μετ’ αὐτοῦ γενομένοις
+   πενθοῦσι καὶ κλαίουσιν·</p>
+</sentence>
+<sentence cite="Luk6:38:5-6:38:14">
+   <p> μέτρον καλὸν πεπιεσμένον σεσαλευμένον ὑπερεκχυννόμενον δώσουσιν
+   εἰς τὸν κόλπον ὑμῶν·</p>
+</sentence>
+<sentence cite="Luk9:6:1-9:6:10">
+   <p> ἐξερχόμενοι δὲ διήρχοντο κατὰ τὰς κώμας εὐαγγελιζόμενοι καὶ
+   θεραπεύοντες πανταχοῦ.</p>
+</sentence>
+<sentence cite="Act13:3:1-13:3:10">
+   <p> τότε νηστεύσαντες καὶ προσευξάμενοι καὶ ἐπιθέντες τὰς χεῖρας
+   αὐτοῖς ἀπέλυσαν.</p>
+</sentence>
+<sentence cite="Luk7:10:1-7:10:11">
+   <p> καὶ ὑποστρέψαντες εἰς τὸν οἶκον οἱ πεμφθέντες εὗρον τὸν δοῦλον
+   ὑγιαίνοντα.</p>
+</sentence>
+<sentence cite="Luk22:27:1-22:27:11">
+   <p> τίς γὰρ μείζων, ὁ ἀνακείμενος ἢ ὁ διακονῶν; οὐχὶ ὁ
+   ἀνακείμενος;</p>
+</sentence>
+<sentence cite="Act19:18:1-19:18:11">
+   <p> πολλοί τε τῶν πεπιστευκότων ἤρχοντο ἐξομολογούμενοι καὶ
+      ἀναγγέλλοντες τὰς πράξεις αὐτῶν.</p>
+</sentence>
+<sentence cite="2Th3:11:1-3:11:11">
+   <p> ἀκούομεν γάρ τινας περιπατοῦντας ἐν ὑμῖν ἀτάκτως, μηδὲν
+      ἐργαζομένους ἀλλὰ περιεργαζομένους·</p>
+</sentence>
+<sentence cite="Mat26:43:1-26:43:12">
+   <p> καὶ ἐλθὼν πάλιν εὗρεν αὐτοὺς καθεύδοντας, ἦσαν γὰρ αὐτῶν οἱ
+   ὀφθαλμοὶ βεβαρημένοι.</p>
+</sentence>
+{% endhighlight %}
+
+You may need something more specific, e.g. sentences with at least 3 participles where one of them is a genitive absolute:
+
+{% highlight xquery lineno %}
+for $sentence in //sentence
+where count($sentence//w[@mood='participle']) > 2
+  and $sentence//w[@mood='participle' and @role=('v','vc') and @case='genitive']
+order by count($sentence//w)
+return $sentence
+{% endhighlight %}
+
+Here are the first results:
+
+{% highlight xml lineno %}
+<sentence cite="Act27:13:1-27:13:12">
+   <p> Ὑποπνεύσαντος δὲ νότου δόξαντες τῆς προθέσεως κεκρατηκέναι
+      ἄραντες ἆσσον παρελέγοντο τὴν Κρήτην.</p>
+</sentence>
+<sentence cite="Act27:15:1-27:15:12">
+   <p> συναρπασθέντος δὲ τοῦ πλοίου καὶ μὴ δυναμένου ἀντοφθαλμεῖν τῷ
+      ἀνέμῳ ἐπιδόντες ἐφερόμεθα.</p>
+</sentence>
+<sentence cite="Act19:36:1-19:36:13">
+   <p> ἀναντιρρήτων οὖν ὄντων τούτων δέον ἐστὶν ὑμᾶς κατεσταλμένους
+      ὑπάρχειν καὶ μηδὲν προπετὲς πράσσειν.</p>
+</sentence>
+<sentence cite="Act8:7:1-8:7:16">
+   <p> πολλοὶ γὰρ τῶν ἐχόντων πνεύματα ἀκάθαρτα βοῶντα φωνῇ μεγάλῃ
+      ἐξήρχοντο, πολλοὶ δὲ παραλελυμένοι καὶ χωλοὶ ἐθεραπεύθησαν·</p>
+</sentence>
+<sentence cite="Mat28:11:1-28:11:17">
+   <p> Πορευομένων δὲ αὐτῶν ἰδού τινες τῆς κουστωδίας ἐλθόντες εἰς τὴν
+      πόλιν ἀπήγγειλαν τοῖς ἀρχιερεῦσιν ἅπαντα τὰ γενόμενα.</p>
+</sentence>
+<sentence cite="Mrk1:32:1-1:32:17">
+   <p> Ὀψίας δὲ γενομένης, ὅτε ἔδυ ὁ ἥλιος, ἔφερον πρὸς αὐτὸν πάντας
+      τοὺς κακῶς ἔχοντας καὶ τοὺς δαιμονιζομένους·</p>
+</sentence>
+<sentence cite="Jhn18:22:1-18:22:17">
+   <p> ταῦτα δὲ αὐτοῦ εἰπόντος εἷς παρεστηκὼς τῶν ὑπηρετῶν ἔδωκεν
+      ῥάπισμα τῷ Ἰησοῦ εἰπών· Οὕτως ἀποκρίνῃ τῷ ἀρχιερεῖ;</p>
+</sentence>
+{% endhighlight %}
+
+Or you may need participles in a variety of cases. This query finds sentences with participles in at least 3 cases:
+
+{% highlight xquery lineno %}
+for $sentence in //sentence
+where count(distinct-values($sentence//w[@mood='participle']/@case)) > 2
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here are the results:
+
+{% highlight xml lineno %}
+<sentence cite="Act7:24:1-7:24:13">
+   <p> καὶ ἰδών τινα ἀδικούμενον ἠμύνατο καὶ ἐποίησεν ἐκδίκησιν τῷ
+      καταπονουμένῳ πατάξας τὸν Αἰγύπτιον.</p>
+</sentence>
+<sentence cite="Act19:36:1-19:36:13">
+   <p> ἀναντιρρήτων οὖν ὄντων τούτων δέον ἐστὶν ὑμᾶς κατεσταλμένους
+      ὑπάρχειν καὶ μηδὲν προπετὲς πράσσειν.</p>
+</sentence>
+<sentence cite="Act8:7:1-8:7:16">
+   <p> πολλοὶ γὰρ τῶν ἐχόντων πνεύματα ἀκάθαρτα βοῶντα φωνῇ μεγάλῃ
+      ἐξήρχοντο, πολλοὶ δὲ παραλελυμένοι καὶ χωλοὶ ἐθεραπεύθησαν·</p>
+</sentence>
+<sentence cite="Mat28:11:1-28:11:17">
+   <p> Πορευομένων δὲ αὐτῶν ἰδού τινες τῆς κουστωδίας ἐλθόντες εἰς τὴν
+      πόλιν ἀπήγγειλαν τοῖς ἀρχιερεῦσιν ἅπαντα τὰ γενόμενα.</p>
+</sentence>
+<sentence cite="Act28:6:11-28:6:27">
+   <p> ἐπὶ πολὺ δὲ αὐτῶν προσδοκώντων καὶ θεωρούντων μηδὲν ἄτοπον εἰς
+      αὐτὸν γινόμενον, μεταβαλόμενοι ἔλεγον αὐτὸν εἶναι θεόν.</p>
+</sentence>
+<sentence cite="Act27:2:1-27:2:19">
+   <p> ἐπιβάντες δὲ πλοίῳ Ἀδραμυττηνῷ μέλλοντι πλεῖν εἰς τοὺς κατὰ τὴν
+      Ἀσίαν τόπους ἀνήχθημεν ὄντος σὺν ἡμῖν Ἀριστάρχου Μακεδόνος
+      Θεσσαλονικέως·</p>
+</sentence>
+<sentence cite="Heb4:2:1-4:2:20">
+   <p> καὶ γάρ ἐσμεν εὐηγγελισμένοι καθάπερ κἀκεῖνοι, ἀλλ’ οὐκ
+      ὠφέλησεν ὁ λόγος τῆς ἀκοῆς ἐκείνους, μὴ συγκεκερασμένους τῇ
+      πίστει τοῖς ἀκούσασιν.</p>
+</sentence>
+<sentence cite="Act24:27:1-24:27:21">
+   <p> Διετίας δὲ πληρωθείσης ἔλαβεν διάδοχον ὁ Φῆλιξ Πόρκιον Φῆστον·
+      θέλων τε χάριτα καταθέσθαι τοῖς Ἰουδαίοις ὁ Φῆλιξ κατέλιπε τὸν
+      Παῦλον δεδεμένον.</p>
+</sentence>
+<sentence cite="Heb10:34:1-10:34:21">
+   <p> καὶ γὰρ τοῖς δεσμίοις συνεπαθήσατε, καὶ τὴν ἁρπαγὴν τῶν
+      ὑπαρχόντων ὑμῶν μετὰ χαρᾶς προσεδέξασθε, γινώσκοντες ἔχειν
+      ἑαυτοὺς κρείττονα ὕπαρξιν καὶ μένουσαν.</p>
+</sentence>
+<sentence cite="Luk13:17:1-13:17:22">
+   <p> καὶ ταῦτα λέγοντος αὐτοῦ κατῃσχύνοντο πάντες οἱ ἀντικείμενοι
+      αὐτῷ, καὶ πᾶς ὁ ὄχλος ἔχαιρεν ἐπὶ πᾶσιν τοῖς ἐνδόξοις τοῖς
+      γινομένοις ὑπ’ αὐτοῦ.</p>
+</sentence>
+<sentence cite="Act16:16:1-16:16:22">
+   <p> Ἐγένετο δὲ πορευομένων ἡμῶν εἰς τὴν προσευχὴν παιδίσκην τινὰ
+      ἔχουσαν πνεῦμα πύθωνα ὑπαντῆσαι ἡμῖν, ἥτις ἐργασίαν πολλὴν
+      παρεῖχεν τοῖς κυρίοις αὐτῆς μαντευομένη·</p>
+</sentence>
+<sentence cite="Luk6:27:1-6:28:9">
+   <p> Ἀλλὰ ὑμῖν λέγω τοῖς ἀκούουσιν, ἀγαπᾶτε τοὺς ἐχθροὺς ὑμῶν, καλῶς
+      ποιεῖτε τοῖς μισοῦσιν ὑμᾶς, εὐλογεῖτε τοὺς καταρωμένους ὑμᾶς,
+      προσεύχεσθε περὶ τῶν ἐπηρεαζόντων ὑμᾶς.</p>
+</sentence>
+<sentence cite="Mat3:7:1-3:7:24">
+   <p> Ἰδὼν δὲ πολλοὺς τῶν Φαρισαίων καὶ Σαδδουκαίων ἐρχομένους ἐπὶ τὸ
+      βάπτισμα αὐτοῦ εἶπεν αὐτοῖς· Γεννήματα ἐχιδνῶν, τίς ὑπέδειξεν
+      ὑμῖν φυγεῖν ἀπὸ τῆς μελλούσης ὀργῆς;</p>
+</sentence>
+<sentence cite="1Tm1:12:1-1:13:8">
+   <p> Χάριν ἔχω τῷ ἐνδυναμώσαντί με Χριστῷ Ἰησοῦ τῷ κυρίῳ ἡμῶν, ὅτι
+      πιστόν με ἡγήσατο θέμενος εἰς διακονίαν, τὸ πρότερον ὄντα
+      βλάσφημον καὶ διώκτην καὶ ὑβριστήν·</p>
+</sentence>
+{% endhighlight %}
+
+Or you may need sentences with at least two circumstantial participles:
+
+{% highlight xquery lineno %}
+for $sentence in //sentence
+where count($sentence//w[@mood='participle' 
+            and (@role='adv' or parent::wg[@role='adv'])]) > 1
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here are the first results:
+
+{% highlight xml lineno %}
+<sentence cite="Luk5:28:1-5:28:6">
+   <p> καὶ καταλιπὼν πάντα ἀναστὰς ἠκολούθει αὐτῷ.</p>
+</sentence>
+<sentence cite="Rom12:15:1-12:15:6">
+   <p> χαίρειν μετὰ χαιρόντων, κλαίειν μετὰ κλαιόντων.</p>
+</sentence>
+<sentence cite="1Co4:12:7-4:13:2">
+   <p> λοιδορούμενοι εὐλογοῦμεν, διωκόμενοι ἀνεχόμεθα, δυσφημούμενοι
+   παρακαλοῦμεν·</p>
+</sentence>
+<sentence cite="Mat22:22:1-22:22:7">
+   <p> καὶ ἀκούσαντες ἐθαύμασαν, καὶ ἀφέντες αὐτὸν ἀπῆλθαν.</p>
+</sentence>
+<sentence cite="Mrk1:31:1-1:31:7">
+   <p> καὶ προσελθὼν ἤγειρεν αὐτὴν κρατήσας τῆς χειρός·</p>
+</sentence>
+<sentence cite="Luk19:6:1-19:6:7">
+   <p> καὶ σπεύσας κατέβη, καὶ ὑπεδέξατο αὐτὸν χαίρων.</p>
+</sentence>
+<sentence cite="Gal5:26:1-5:26:7">
+   <p> μὴ γινώμεθα κενόδοξοι, ἀλλήλους προκαλούμενοι, ἀλλήλοις
+   φθονοῦντες.</p>
+</sentence>
+<sentence cite="Mat8:25:1-8:25:8">
+   <p> καὶ προσελθόντες ἤγειραν αὐτὸν λέγοντες· Κύριε, σῶσον,
+   ἀπολλύμεθα.</p>
+</sentence>
+<sentence cite="Mrk14:39:1-14:39:8">
+   <p> καὶ πάλιν ἀπελθὼν προσηύξατο τὸν αὐτὸν λόγον εἰπών.</p>
+</sentence>
+<sentence cite="Luk4:20:1-4:20:8">
+   <p> καὶ πτύξας τὸ βιβλίον ἀποδοὺς τῷ ὑπηρέτῃ ἐκάθισεν·</p>
+</sentence>
+<sentence cite="Luk8:24:1-8:24:8">
+   <p> προσελθόντες δὲ διήγειραν αὐτὸν λέγοντες· Ἐπιστάτα ἐπιστάτα,
+   ἀπολλύμεθα·</p>
+</sentence>
+<sentence cite="Luk19:28:1-19:28:8">
+   <p> Καὶ εἰπὼν ταῦτα ἐπορεύετο ἔμπροσθεν ἀναβαίνων εἰς
+   Ἱεροσόλυμα.</p>
+</sentence>
+{% endhighlight %}
+
+Here are the first results if we require at least three circumstantial participles:
+
+{% highlight xml lineno %}
+<sentence cite="1Co4:12:7-4:13:2">
+   <p> λοιδορούμενοι εὐλογοῦμεν, διωκόμενοι ἀνεχόμεθα, δυσφημούμενοι
+   παρακαλοῦμεν·</p>
+</sentence>
+<sentence cite="Mrk16:10:1-16:10:10">
+   <p> ἐκείνη πορευθεῖσα ἀπήγγειλεν τοῖς μετ’ αὐτοῦ γενομένοις
+   πενθοῦσι καὶ κλαίουσιν·</p>
+</sentence>
+<sentence cite="Mat26:44:1-26:44:13">
+   <p> καὶ ἀφεὶς αὐτοὺς πάλιν ἀπελθὼν προσηύξατο ἐκ τρίτου τὸν αὐτὸν
+   λόγον εἰπὼν πάλιν.</p>
+</sentence>
+<sentence cite="Mat14:30:1-14:30:14">
+   <p> βλέπων δὲ τὸν ἄνεμον ἰσχυρὸν ἐφοβήθη, καὶ ἀρξάμενος
+   καταποντίζεσθαι ἔκραξεν λέγων· Κύριε, σῶσόν με.</p>
+</sentence>
+<sentence cite="Mat27:35:1-27:36:5">
+   <p> σταυρώσαντες δὲ αὐτὸν διεμερίσαντο τὰ ἱμάτια αὐτοῦ βάλλοντες
+   κλῆρον, καὶ καθήμενοι ἐτήρουν αὐτὸν ἐκεῖ.</p>
+</sentence>
+<sentence cite="Luk10:25:1-10:25:14">
+   <p> Καὶ ἰδοὺ νομικός τις ἀνέστη ἐκπειράζων αὐτὸν λέγων· Διδάσκαλε,
+   τί ποιήσας ζωὴν αἰώνιον κληρονομήσω;</p>
+</sentence>
+<sentence cite="Mrk9:20:6-9:20:20">
+   <p> καὶ ἰδὼν αὐτὸν τὸ πνεῦμα εὐθὺς συνεσπάραξεν αὐτόν, καὶ πεσὼν
+   ἐπὶ τῆς γῆς ἐκυλίετο ἀφρίζων.</p>
+</sentence>
+<sentence cite="Luk5:25:1-5:25:17">
+   <p> καὶ παραχρῆμα ἀναστὰς ἐνώπιον αὐτῶν, ἄρας ἐφ’ ὃ κατέκειτο,
+   ἀπῆλθεν εἰς τὸν οἶκον αὐτοῦ δοξάζων τὸν θεόν.</p>
+</sentence>
+{% endhighlight %}
+
+Incidentally, one verse has 7 circumstantial participles!
+
+{% highlight xml lineno %}   
+<sentence cite="2Pe2:4:1-2:10:12">
+   <p> Εἰ γὰρ ὁ θεὸς ἀγγέλων ἁμαρτησάντων οὐκ ἐφείσατο, ἀλλὰ σειραῖς
+   ζόφου ταρταρώσας παρέδωκεν εἰς κρίσιν τηρουμένους, καὶ ἀρχαίου
+   κόσμου οὐκ ἐφείσατο, ἀλλὰ ὄγδοον Νῶε δικαιοσύνης κήρυκα ἐφύλαξεν,
+   κατακλυσμὸν κόσμῳ ἀσεβῶν ἐπάξας, καὶ πόλεις Σοδόμων καὶ Γομόρρας
+   τεφρώσας καταστροφῇ κατέκρινεν, ὑπόδειγμα μελλόντων ἀσεβέσιν
+   τεθεικώς, καὶ δίκαιον Λὼτ καταπονούμενον ὑπὸ τῆς τῶν ἀθέσμων ἐν
+   ἀσελγείᾳ ἀναστροφῆς ἐρρύσατο βλέμματι γὰρ καὶ ἀκοῇ ὁ δίκαιος
+   ἐγκατοικῶν ἐν αὐτοῖς ἡμέραν ἐξ ἡμέρας ψυχὴν δικαίαν ἀνόμοις ἔργοις
+   ἐβασάνιζεν οἶδεν κύριος εὐσεβεῖς ἐκ πειρασμοῦ ῥύεσθαι, ἀδίκους δὲ
+   εἰς ἡμέραν κρίσεως κολαζομένους τηρεῖν, μάλιστα δὲ τοὺς ὀπίσω
+   σαρκὸς ἐν ἐπιθυμίᾳ μιασμοῦ πορευομένους καὶ κυριότητος
+   καταφρονοῦντας.</p>
+</sentence>
+{% endhighlight %}
+
+Or perhaps you need examples with at least two supplementary participles:
+
+{% highlight xquery lineno %}   
+for $sentence in //sentence
+where count($sentence//w[@mood='participle' 
+            and (@role='o' or parent::wg[@role='o'])]) > 1
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here are the first results:
+
+{% highlight xml lineno %}   
+<sentence cite="Luk11:25:1-11:25:6">
+   <p> καὶ ἐλθὸν εὑρίσκει σεσαρωμένον καὶ κεκοσμημένον.</p>
+</sentence>
+<sentence cite="Heb13:14:1-13:14:10">
+   <p> οὐ γὰρ ἔχομεν ὧδε μένουσαν πόλιν, ἀλλὰ τὴν μέλλουσαν
+   ἐπιζητοῦμεν·</p>
+</sentence>
+<sentence cite="Luk1:52:1-1:53:7">
+   <p> καθεῖλεν δυνάστας ἀπὸ θρόνων καὶ ὕψωσεν ταπεινούς, πεινῶντας
+      ἐνέπλησεν ἀγαθῶν καὶ πλουτοῦντας ἐξαπέστειλεν κενούς.</p>
+</sentence>
+<sentence cite="Mat12:20:1-12:20:16">
+   <p> κάλαμον συντετριμμένον οὐ κατεάξει καὶ λίνον τυφόμενον οὐ
+      σβέσει, ἕως ἂν ἐκβάλῃ εἰς νῖκος τὴν κρίσιν.</p>
+</sentence>
+<sentence cite="Luk8:35:1-8:35:30">
+   <p> ἐξῆλθον δὲ ἰδεῖν τὸ γεγονὸς καὶ ἦλθον πρὸς τὸν Ἰησοῦν, καὶ
+      εὗρον καθήμενον τὸν ἄνθρωπον ἀφ’ οὗ τὰ δαιμόνια ἐξῆλθεν
+      ἱματισμένον καὶ σωφρονοῦντα παρὰ τοὺς πόδας τοῦ Ἰησοῦ, καὶ
+      ἐφοβήθησαν.</p>
+</sentence>
+<sentence cite="Rev10:1:1-10:2:8">
+   <p> Καὶ εἶδον ἄλλον ἄγγελον ἰσχυρὸν καταβαίνοντα ἐκ τοῦ οὐρανοῦ,
+      περιβεβλημένον νεφέλην, καὶ ἡ ἶρις ἐπὶ τὴν κεφαλὴν αὐτοῦ, καὶ τὸ
+      πρόσωπον αὐτοῦ ὡς ὁ ἥλιος, καὶ οἱ πόδες αὐτοῦ ὡς στῦλοι πυρός,
+      καὶ ἔχων ἐν τῇ χειρὶ αὐτοῦ βιβλαρίδιον ἠνεῳγμένον.</p>
+</sentence>
+{% endhighlight %}
+
+Or perhaps you want to optimize classroom time by focusing on the verbs most commonly used as participles.  The following query generates statistical information on the use of participles in the Greek New Testament:
+
+{% highlight xquery lineno %}   
+for $word in //w[@mood='participle']
+let $sentence := $word/ancestor::sentence
+group by $lemma := $word/@lemma
+let $count := count($word)
+order by $count descending
+count $rank
+where $rank < 50
+return 
+   <participle>
+     {
+         attribute lemma {$lemma},
+         attribute rank {$rank},
+         attribute count {$count}
+      }
+    </participle>
+{% endhighlight %}
+
+Here are the top 50 verbs used as participles:
+
+{% highlight xml lineno %}   
+<participle lemma="λέγω" rank="1" count="514"/>
+<participle lemma="ἔχω" rank="2" count="240"/>
+<participle lemma="ἔρχομαι" rank="3" count="158"/>
+<participle lemma="εἰμί" rank="4" count="158"/>
+<participle lemma="ὁράω" rank="5" count="140"/>
+<participle lemma="ἀκούω" rank="6" count="135"/>
+<participle lemma="γίνομαι" rank="7" count="134"/>
+<participle lemma="ἀποκρίνομαι" rank="8" count="104"/>
+<participle lemma="ποιέω" rank="9" count="100"/>
+<participle lemma="λαμβάνω" rank="10" count="79"/>
+<participle lemma="πιστεύω" rank="11" count="77"/>
+<participle lemma="λαλέω" rank="12" count="71"/>
+<participle lemma="κάθημαι" rank="13" count="65"/>
+<participle lemma="ἐξέρχομαι" rank="14" count="64"/>
+<participle lemma="καλέω" rank="15" count="64"/>
+<participle lemma="ζάω" rank="16" count="62"/>
+<participle lemma="ἵστημι" rank="17" count="58"/>
+<participle lemma="μέλλω" rank="18" count="54"/>
+<participle lemma="προσέρχομαι" rank="19" count="51"/>
+<participle lemma="πορεύομαι" rank="20" count="50"/>
+<participle lemma="ἀνίστημι" rank="21" count="49"/>
+<participle lemma="δίδωμι" rank="22" count="48"/>
+<participle lemma="εἰσέρχομαι" rank="23" count="48"/>
+<participle lemma="ὑπάρχω" rank="24" count="42"/>
+<participle lemma="γράφω" rank="25" count="40"/>
+<participle lemma="καταβαίνω" rank="26" count="38"/>
+<participle lemma="πέμπω" rank="27" count="37"/>
+<participle lemma="βλέπω" rank="28" count="37"/>
+<participle lemma="ἀγαπάω" rank="29" count="37"/>
+<participle lemma="διδάσκω" rank="30" count="34"/>
+<participle lemma="ἀπέρχομαι" rank="31" count="31"/>
+<participle lemma="θέλω" rank="32" count="30"/>
+<participle lemma="γινώσκω" rank="33" count="30"/>
+<participle lemma="οἶδα" rank="34" count="28"/>
+<participle lemma="κατοικέω" rank="35" count="28"/>
+<participle lemma="περιπατέω" rank="36" count="27"/>
+<participle lemma="προσεύχομαι" rank="37" count="27"/>
+<participle lemma="ἐγείρω" rank="38" count="26"/>
+<participle lemma="ζητέω" rank="39" count="26"/>
+<participle lemma="δέω" rank="40" count="26"/>
+<participle lemma="παραδίδωμι" rank="41" count="25"/>
+<participle lemma="ἀναβαίνω" rank="42" count="25"/>
+<participle lemma="εὑρίσκω" rank="43" count="25"/>
+<participle lemma="ἀποστέλλω" rank="44" count="25"/>
+<participle lemma="σπείρω" rank="45" count="24"/>
+<participle lemma="δύναμαι" rank="46" count="24"/>
+<participle lemma="ἐσθίω" rank="47" count="23"/>
+<participle lemma="κρίνω" rank="48" count="22"/>
+<participle lemma="προσκαλέομαι" rank="49" count="22"/>
+{% endhighlight %}
+
+Or perhaps you want to see only participles for verbs of perception, using common verbs known to your students:
+
+{% highlight xquery lineno %}   
+let $lemmas := ("ὁράω", "ἀκούω", "βλέπω", "γινώσκω", "οἶδα", "εὑρίσκω")
+for $sentence in //sentence
+where $sentence//w[@mood='participle' and @lemma=$lemmas]
+order by count($sentence//w)
+return local:straight-text($sentence)
+{% endhighlight %}
+
+Here are the first results:
+
+{% highlight xml lineno %}   
+<sentence cite="Heb3:16:1-3:16:4">
+   <p> τίνες γὰρ ἀκούσαντες παρεπίκραναν;</p>
+</sentence>
+<sentence cite="Luk20:16:12-20:16:16">
+   <p> ἀκούσαντες δὲ εἶπαν· Μὴ γένοιτο.</p>
+</sentence>
+<sentence cite="Rev22:17:9-22:17:13">
+   <p> καὶ ὁ ἀκούων εἰπάτω· Ἔρχου·</p>
+</sentence>
+<sentence cite="Mat12:15:1-12:15:6">
+   <p> Ὁ δὲ Ἰησοῦς γνοὺς ἀνεχώρησεν ἐκεῖθεν.</p>
+</sentence>
+<sentence cite="Luk8:53:1-8:53:6">
+   <p> καὶ κατεγέλων αὐτοῦ, εἰδότες ὅτι ἀπέθανεν.</p>
+</sentence>
+<sentence cite="Luk9:11:1-9:11:6">
+   <p> οἱ δὲ ὄχλοι γνόντες ἠκολούθησαν αὐτῷ.</p>
+</sentence>
+<sentence cite="Luk18:15:10-18:15:15">
+   <p> ἰδόντες δὲ οἱ μαθηταὶ ἐπετίμων αὐτοῖς.</p>
+</sentence>
+<sentence cite="Jhn14:9:15-14:9:20">
+   <p> ὁ ἑωρακὼς ἐμὲ ἑώρακεν τὸν πατέρα·</p>
+</sentence>
+<sentence cite="Jhn18:21:4-18:21:9">
+   <p> ἐρώτησον τοὺς ἀκηκοότας τί ἐλάλησα αὐτοῖς·</p>
+</sentence>
+<sentence cite="Rom8:24:5-8:24:10">
+   <p> ἐλπὶς δὲ βλεπομένη οὐκ ἔστιν ἐλπίς,</p>
+</sentence>
+<sentence cite="Rev17:6:18-17:6:23">
+   <p> Καὶ ἐθαύμασα ἰδὼν αὐτὴν θαῦμα μέγα·</p>
+</sentence>
+<sentence cite="Mat22:22:1-22:22:7">
+   <p> καὶ ἀκούσαντες ἐθαύμασαν, καὶ ἀφέντες αὐτὸν ἀπῆλθαν.</p>
+</sentence>
+<sentence cite="Mrk6:38:10-6:38:16">
+   <p> καὶ γνόντες λέγουσιν· Πέντε, καὶ δύο ἰχθύας.</p>
+</sentence>
+<sentence cite="Jhn9:7:14-9:7:20">
+   <p> ἀπῆλθεν οὖν καὶ ἐνίψατο, καὶ ἦλθεν βλέπων.</p>
+</sentence>
+<sentence cite="Jhn20:20:11-20:20:17">
+   <p> ἐχάρησαν οὖν οἱ μαθηταὶ ἰδόντες τὸν κύριον.</p>
+</sentence>
+<sentence cite="Act7:31:1-7:31:7">
+   <p> ὁ δὲ Μωϋσῆς ἰδὼν ἐθαύμασεν τὸ ὅραμα.</p>
+</sentence>
+<sentence cite="Rev22:8:1-22:8:7">
+   <p> Κἀγὼ Ἰωάννης ὁ ἀκούων καὶ βλέπων ταῦτα.</p>
+</sentence>
+<sentence cite="Mat2:10:1-2:10:8">
+   <p> ἰδόντες δὲ τὸν ἀστέρα ἐχάρησαν χαρὰν μεγάλην σφόδρα.</p>
+</sentence>
+{% endhighlight %}
+
+### But wait, there's more!
+
+This post is the last in this tutorial, but it only scratches the
+surface, showing some of the queries you might do to illustrate how
+participles work in the Greek New Testament.
+
+If you've been reading this without actually trying out the queries,
+the best next step is to go back to the first installment and work
+your way through the tutorial again, trying out the queries and
+writing variations on them to see what results they yield. The data
+and software you need is available for free on Windows, Macintosh, or
+Linux, and it opens up powerful possibilities for querying syntax.
+
+This tutorial has been focused on Greek texts, morphologies, and
+treebanks, but similar techniques can be used to query any kind of
+XML, and many kinds of XML can be queried together, generating new
+kinds of data from existing datasets. See the [dashboard](/dashboard/)
+for other resources you might want to explore this way.
+
+And if this tutorial has whetted your appetite, there will be other
+tutorials for other languages, datasets, and environments here on
+[biblicalhumanities](biblicalhumanities.github.io), where we are
+working to build an open data ecosystem for biblical data and teach
+people how to use it.
