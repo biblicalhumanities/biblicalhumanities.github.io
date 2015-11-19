@@ -53,6 +53,7 @@ The first step is to look at a participle in a sentence and see how the syntax t
 {% endhighlight %}
 
 This sentence has three Greek words, which generally require about twice as many English verbs to translate. Most of the action is in the relationship between the two verbs. 
+
 <table border="1">
     <tr>
         <td>καὶ</td>
@@ -65,6 +66,7 @@ This sentence has three Greek words, which generally require about twice as many
         <td>he stood there</td>
     </tr>
 </table>
+
 
 A great deal of the meaning of Greek sentences lies in the syntactic relationships among words, and the verbs play a central role. Syntax trees represent this meaning with structure and attributes. In the syntax tree, the `class`, `role`, and `head` attributes, together with the hierarchical relationships in the tree, describe the syntactic relationships. The main verb is ἔστη, so the `role` is `v`.  The participle is adverbial, so the `role` is `adv`. Because the participle is adverbial, you can remove it and still have a perfectly good sentence, καὶ ἔστη, meaning "he stood there". The adverbial participle paints the scene for the main verb - in this case, it is aorist, so it describes something that happened before the main verb, the man rising up to stand there.  
 
@@ -178,6 +180,7 @@ Here is the first result, which is the shortest example, from James 5:11.
 
 In this sentence, the participle ὑπομείναντας is the object of the verb μακαρίζομεν:
 
+
 <table border="1">
     <tr>
         <td>ἰδοὺ</td>
@@ -190,6 +193,7 @@ In this sentence, the participle ὑπομείναντας is the object of the 
         <td>the ones who have endured</td>
     </tr>
 </table>
+
 
 In this case, the participle is accusative because it is the object of the main verb μακαρίζομεν and the subjects of the verbs are not the same - the people who have endured are not the same people who are considering them blessed. 
 
@@ -455,6 +459,7 @@ Here is the first result:
 
 The rooster just crowed three times, Peter remembers that Jesus said he would betray him. The main verb is ἔκλαιεν, "he wept".  The participle ἐπιβαλὼν tells us the circumstances surrounding this weeping: Peter thought about what Jesus had said, then he wept.
 
+
 <table border="1">
     <tr>
        <td>καὶ</td>
@@ -574,6 +579,7 @@ Here is the first result:
 
 The participle πλεόντων means "as they were sailing", the main verb  ἀφύπνωσεν means "he fell asleep". The two statements are not syntacticaly connected to each other.
 
+
 <table border="1">
     <tr>
        <td>πλεόντων δὲ αὐτῶν</td>
@@ -584,6 +590,7 @@ The participle πλεόντων means "as they were sailing", the main verb  ἀ
        <td>he fell asleep</td>
     </tr>
 </table>
+
 
 Here are the first results of the query:
 
@@ -678,6 +685,7 @@ Here is the first result:
 
 An attributive participle describes the associated noun:
 
+
 <table border="1">
     <tr>
        <td>θεὸς</td>   
@@ -690,6 +698,7 @@ An attributive participle describes the associated noun:
        <td>the one who justifies</td>
     </tr>
 </table>
+
 
 Here are the first results of the query:
 
@@ -793,6 +802,7 @@ Here is the first result:
 
 In this example, κεκορεσμένοι+ἐστέ combine to express the thought "you have become satisfied".
 
+
 <table border="1">
     <tr>
        <td> Ἤδη</td>   
@@ -803,6 +813,7 @@ In this example, κεκορεσμένοι+ἐστέ combine to express the thoug
        <td>You have become satisfied</td>
     </tr>
 </table>
+
 
 Here are the first results:
 
