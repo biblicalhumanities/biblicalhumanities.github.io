@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Querying Greek Syntax Trees: Part 3"
+title:  "Querying Greek Texts in XML: Part 3"
 date:   2015-11-15 14:33:50
 categories: xquery tutorial greek
 ---
@@ -9,14 +9,14 @@ This is the third in a series on querying Greek texts with
 XQuery. Before you read this, you should consider reading the earlier
 posts:
 
-- [Querying Greek Syntax Trees: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
-- [Querying Greek Syntax Trees: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
+- [Querying Greek Texts in XML: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
+- [Querying Greek Texts in XML: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
 
 In this post, we will start doing morphology queries on the Lowfat syntax trees.  The next post will start a series on querying syntax, leading up to queries related to [Rikjsbaron's chapter on the Greek Participle](http://www.press.uchicago.edu/ucp/books/book/chicago/S/bo5387752.html).
 
 ### Queries on Morphology
 
-Before we do our first query on morphology, let's take a look at the word frequency query we used at the end of [Querying Greek Syntax Trees: Part 1]({% post_url 2015-11-13-querying-000 %}):
+Before we do our first query on morphology, let's take a look at the word frequency query we used at the end of [Querying Greek Texts in XML: Part 1]({% post_url 2015-11-13-querying-000 %}):
 
 {% highlight xml lineno %}    
 for $w in //w

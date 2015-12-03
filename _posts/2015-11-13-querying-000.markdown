@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Querying Greek Syntax Trees: Part 1"
+title:  "Querying Greek Texts in XML: Part 1"
 date:   2015-11-13 14:33:50
 categories: xquery tutorial greek
 ---
