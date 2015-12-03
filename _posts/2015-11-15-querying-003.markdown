@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Querying Biblical Texts: Part 4"
+title:  "Querying Greek Syntax Trees: Part 4"
 date:   2015-11-16 14:33:50
 categories: xquery tutorial greek
 ---
@@ -9,9 +9,9 @@ This is the last in a series on querying Greek texts with
 XQuery. Before you read this, you should consider reading the earlier
 posts:
 
-- [Querying Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
-- [Querying Biblical Texts: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
-- [Querying Biblical Texts: Part 3]({% post_url 2015-11-15-querying-002 %}):  shows a variety of queries that exploit morphology
+- [Querying Greek Syntax Trees: Part 1]({% post_url 2015-11-13-querying-000 %}):  introduces simple queries on base texts.  
+- [Querying Greek Syntax Trees: Part 2]({% post_url 2015-11-15-querying-001 %}):  discusses morphologies and three kinds of syntax trees
+- [Querying Greek Syntax Trees: Part 3]({% post_url 2015-11-15-querying-002 %}):  shows a variety of queries that exploit morphology
 
 In this post, we will start doing syntax queries on the Lowfat syntax trees, focusing on participles. 
 

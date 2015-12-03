@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "Querying Biblical Texts: Part 2"
+title:  "Querying Greek Syntax Trees: Part 2"
 date:   2015-11-15 14:33:50
 categories: xquery tutorial greek
 ---
 
 This is the second in a series on querying Greek texts with
 XQuery. Before you read this, you should consider reading [Querying
-Biblical Texts: Part 1]({% post_url 2015-11-13-querying-000 %}), which
+Greek Syntax Trees: Part 1]({% post_url 2015-11-13-querying-000 %}), which
 introduces simple queries on base texts.  In this post, we introduce
 morphologies and syntax trees. In the next post, we will show some of
 the queries that can be done using treebank markup.
