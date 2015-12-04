@@ -25,7 +25,7 @@ These are the members of the biblicalhumanities.org Technical Advisory Board.
 - Jonathan Robie <jonathan.robie@biblicalhumanities.org>
 - Randall Tan <randall.tan@globalbibleinitiative.org>
 - Patrick Durusau <patrick@durusau.net>
-- Paul O'Rear <paul_orear@sil.org>
+- Paul O'Rear <a href="mailto:paul_orear@sil.org">paul_orear@sil.org</a>
 - Micheal Palmer <mwpalmer@greek-language.com>
 - Ulrik Sandborg-Petersen <ulrikp@hum.aau.dk>
 - James Tauber <jtauber@jtauber.com>
