@@ -5,7 +5,7 @@ date:   2016-10-17 10:33:50
 categories: 
 ---
 
-On Sunday, November 20th 2016, from 1:00 PM to 3:30 PM, GERT will host a session called "Hebrew Bible Technology Buffet". Barry Bandstra of Hope College will preside.
+On Sunday, November 20th 2016, from 1:00 PM to 3:30 PM, GERT will host a session with the theme "Hebrew Bible Technology Buffet". Barry Bandstra of Hope College will preside.
 
 The session has four presentations:
 

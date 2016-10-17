@@ -5,7 +5,7 @@ date:   2016-10-17 10:33:50
 categories: 
 ---
 
-On Saturday, November 19th 2016, from 4:00 PM to 6:30 PM, GERT will host a session called "Low Hanging Fruit in Digital Biblical Studies", focusing on existing datasets and technologies that are freely licensed and can be leveraged to advance biblical studies, at the SBL Annual meeting in room 305 of the Convention Center.  Randall Tan of the Global Bible Initiative will preside.
+On Saturday, November 19th 2016, from 4:00 PM to 6:30 PM, GERT will host a session with the theme "Low Hanging Fruit in Digital Biblical Studies", focusing on existing datasets and technologies that are freely licensed and can be leveraged to advance biblical studies, at the SBL Annual meeting in room 305 of the Convention Center.  Randall Tan of Global Bible Initiative will preside.
 
 The session has five presentations:
 
