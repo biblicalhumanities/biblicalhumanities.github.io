@@ -19,3 +19,5 @@ The session has five presentations:
   [An Online Adaptive Reading Environment for the Greek New Testament](https://www.sbl-site.org/meetings/abstract.aspx?id=39108) (30 min)
 - Troy Griffitts, Institut für Neutestamentliche Textforschung
   [An Online Collaborative Research Environment for Project Synergy](https://www.sbl-site.org/meetings/abstract.aspx?id=40619) (30 min)
+
+After this session, there will be a dinner for people who create open digital datasets or open source software for digital biblical studies.  Please contact Jonathan Robie <jonathan.robie@biblicalhumanities.org> or Randall Tan <randall.tan@globalbibleinitiative.org> if you wish to attend.  RSVP strongly requested, since the restaurant has limited seating.
