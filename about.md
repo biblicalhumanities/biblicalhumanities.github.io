@@ -4,6 +4,8 @@ title: About
 permalink: /about/
 ---
 
+# **Creating open digital resources for biblical studies**
+
 ## What is biblicalhumanities.org?
 
 biblicalhumanities.org is a community of computer scientists, Bible scholars, and digital humanists collaborating to create open digital resources for biblical studies.  Our emphasis is on open resources for biblical languages, such as morphologically tagged texts, treebanks, and lexicons. We hope that these resources will be used widely for teaching, research, and resources used to read and study the Bible.
