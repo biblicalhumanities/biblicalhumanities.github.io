@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "S19-217 Global Education and Research Technology Open Session
+title:  "S19-217 Global Education and Research Technology Open Session"
 date:   2016-10-17 10:33:50
 categories: 
 ---
