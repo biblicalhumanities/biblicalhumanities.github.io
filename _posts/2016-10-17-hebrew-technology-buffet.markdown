@@ -17,3 +17,5 @@ The session has four presentations:
   [Total Link: The Power of Alignment for Bible Translation](https://www.sbl-site.org/meetings/abstract.aspx?id=40534) (30 min)
 - Drayton C. Benner, Miklal Software Solutions and James R. Covington, University of Chicago
   [A New Transliteration of the Hebrew Bible](https://www.sbl-site.org/meetings/abstract.aspx?id=39435) (30 min)
+
+Presentations will be followed by a discussion session.
