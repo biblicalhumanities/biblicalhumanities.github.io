@@ -5,6 +5,10 @@ date:   2016-10-17 10:33:50
 categories: 
 ---
 
+On Saturday, November 19th 2016, from 1:00 PM to 3:30 PM, GERT will host a variety of presentations applying digital technology to the Bible at the SBL Annual meeting in Room 209 of the Convention Center. Nicolai Winther-Nielsen of the Fjellhaug Internasjonale Høgskole will preside.
+
+The session has five presentations:
+
 -  Bradley C Erickson, University of North Carolina at Chapel Hill
    [Stepping into the Past: Exploring the Ancient Synagogue of Bet Alpha in Real-Time 3D](https://www.sbl-site.org/meetings/abstract.aspx?id=38611) (30 min)
 -  Micheal Palmer, Greek-Language.com and Jonathan Robie, B-Greek: The Biblical Greek Forum
