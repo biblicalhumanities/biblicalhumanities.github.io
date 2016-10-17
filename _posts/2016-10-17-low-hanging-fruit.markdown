@@ -20,4 +20,4 @@ The session has five presentations:
 - Troy Griffitts, Institut für Neutestamentliche Textforschung
   [An Online Collaborative Research Environment for Project Synergy](https://www.sbl-site.org/meetings/abstract.aspx?id=40619) (30 min)
 
-After this session, there will be a dinner for people who create open digital datasets or open source software for digital biblical studies.  Please contact Jonathan <jonathan.robie@biblicalhumanities.org> or Randall <randall.tan@globalbibleinitiative.org> if you wish to attend.  RSVP strongly requested, since the restaurant has limited seating.
+After this session, a group of people who create open digital datasets or open source software for digital biblical studies will go out to dinner together.  The main purpose of this dinner is to discuss ways we can work together over the coming year to continue providing useful datasets and software. Please contact Jonathan <jonathan.robie@biblicalhumanities.org> or Randall <randall.tan@globalbibleinitiative.org> if you wish to attend.  RSVP strongly requested, since the restaurant has limited seating.
