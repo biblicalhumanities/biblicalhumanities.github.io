@@ -9,10 +9,10 @@ GERT and biblicalhumanities.org will be active all day (and evening!) at on Satu
 - **9:00-11:30 AM Saturday, November 19th**<br/>
   [Visualizations of the Bible](./2016/10/16/bible-and-visual-art.html), Convention Center Room 213A
 - **1:00-3:30 AM Saturday, November 19th**<br/> 
-  [Global Education and Research Technology Open Session](./2016/10/17/general-technology-buffet.html)
+  [Global Education and Research Technology Open Session](./2016/10/17/general-technology-buffet.html), Convention Center Room 209
 - **4:00-6:30 PM Saturday, November 19th**<br/>
-  [Low Hanging Fruit in Digital Biblical Studies](./2016/10/17/low-hanging-fruit.html)
+  [Low Hanging Fruit in Digital Biblical Studies](./2016/10/17/low-hanging-fruit.html), Convention Center Room 305
 - **6:30 PM Saturday, November 19th**<br/>
-  [Open Digital Humanities Dinner](./2016/10/18/open-data-dinner.html)
+  [Open Digital Humanities Dinner](./2016/10/18/open-data-dinner.html), RSVP for details
 - **1:00-3:30 AM Sunday, November 20th**<br/>
-  [Hebrew Bible Technology Buffet](./2016/10/17/hebrew-technology-buffet.html)
+  [Hebrew Bible Technology Buffet](./2016/10/17/hebrew-technology-buffet.html), Convention Center Room 305
