@@ -16,6 +16,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [SBLGNT](http://sblgnt.com/) (XML, OSIS, text, several other formats): High quality critical text created by Logos Software and the Society of Biblical Literature. Note the [license](http://sblgnt.com/license/), which imposes conditions on downstream works that use it.
 - *Greek New Testament - Byzantine Text*
   - [byztxt.com](http://www.byztxt.com/downloads.html): Robinson-Pierpoint Byzantine text, a Majority Text.
+- *Codex Sinaiticus*
+  - [Codex Sinaiticus](http://www.codexsinaiticus.org/en/): Codex Sinaiticus, presented on an impressive website that offers [downloads](http://www.codexsinaiticus.org/en/project/transcription_download.aspx) of their XML data.
 - *Swete's Septuagint*
   - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/septuagint-dev) Machine-corrected version of Swetes Septuagint.
 - *Migne's Patrologia Graeca*
