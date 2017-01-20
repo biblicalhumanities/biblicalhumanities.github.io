@@ -74,6 +74,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [Rydberg-Cox](http://www.perseus.tufts.edu/hopper/dltext?doc=Perseus%3Atext%3A1999.04.0052)(XML): Jeffrey A. Rydberg-Cox, Overview of Greek Syntax. Extremely useful summaries of Greek syntax, easily integrated into a reading environment.
 - *Greek Paradigms*
   - [Masternarde](http://ucbclassics.dreamhosters.com/ancgreek/AGTdownload.zip) (HTML, PDF): Ancient Greek Tutorials, by Donald J. Mastronarde with the assistance of the Berkeley Language Center of the University of California, Berkeley. ©1999-2005 The Regents of the University of California. Copyright prevents free distribution, but this can be useful for producing resources.
+- *Gesenius' Hebrew Grammar*
+  - [Gesenius] (https://en.wikisource.org/wiki/Gesenius'_Hebrew_Grammar): An old classic reference grammar.
 
 ### Commentaries, Secondary Literature, and Other Resources
 
