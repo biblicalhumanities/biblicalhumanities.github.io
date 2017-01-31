@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "2016 Dataset of the Year: Levinsohn's Greek New Testament Discourse Features"
+date:   2017-01-27 16:33:50
+categories: 
+---
+
+The biblicalhumanities.org 2016 Dataset of the Year is [Levinsohn's Greek New Testament Discourse Features](https://github.com/biblicalhumanities/levinsohn).  We created this award for the most valuable open dataset released in a given year for digital biblical studies. 
+
+Most students of biblical discourse analysis are aware of Stephen Levinsohn's groundbreaking work, but many do not know that Levinsohn produced a discourse analysis of the entire Greek New Testament using SIL International’s Bible Analysis Research Tool (BART). Displays of this discourse analysis are [available in PDF form](http://www-01.sil.org/~levinsohns/BART.html), and are also available to licensed users of BART.
+
+SIL International and Paul O'Rear, the primary developer of BART, have now released the underlying data [on Github](https://github.com/biblicalhumanities/levinsohn) for use in any program that uses the UBS4/NA27, and Paul is working on making the data available for texts that are more freely licensed. Congratulations to Paul, the recipient of our first annual Dataset of the Year award.
