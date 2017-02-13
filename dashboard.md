@@ -24,6 +24,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [OpenGreekAndLatin](https://github.com/OGL-PatrologiaGraecaDev)  Massive collection of Church Fathers. See description on [Wikipedia](https://en.wikipedia.org/wiki/Patrologia_Graeca).
 - *Cramer's Catenae*
   - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/catenae-dev) (XML): For each verse, lists any comments that the early Fathers made on that verse.
+- *Sefaria*
+  - [Sefaria](https://github.com/Sefaria/Sefaria-Export) (JSON): A wonderful collection of Jewish texts containing Tanakh, Commentaries (Rashi, Ibn Ezra, etc.), Midrash, Targums, Talmud, Kabbalah, a lexicon, and a Hebrew grammar.
 
 ### Morphologically Tagged Texts
 
