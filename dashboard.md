@@ -66,6 +66,10 @@ If you believe a resource should be added to this page, please contact us (see t
   - [Translatable Exegetical Tools](https://github.com/translatable-exegetical-tools/Abbott-Smith) (TEI XML): Probably the best quality lexicon in the public domain.
 - *Dodson*
   - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV, XML): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
+- *Liddell-Scott-Jones*
+  - [Perseus Lexica](https://github.com/PerseusDL/lexica) (TEI XML): The Great Scott, a massive and extremely useful lexicon. (The smaller "Middle Liddell" is also available from Perseus.)
+- *Mounce Lexicon*
+  - [Mounce](https://github.com/billmounce/dictionary) (JSON): Mounce's Concise Greek-English Dictionary of Biblical Greek.
 - *Strong's Dictionary*
   - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
 - *Hebrew Lexicon*
