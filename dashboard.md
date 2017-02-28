@@ -67,7 +67,7 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Dodson*
   - [biblicalhumanities](https://github.com/biblicalhumanities/Dodson-Greek-Lexicon) (CSV, XML): This lexicon has simple glosses and short definitions. Originally developed by Jeffrey Dodson, released to the public domain.
 - *Liddell-Scott-Jones*
-  - [Perseus Lexica](https://github.com/PerseusDL/lexica) (TEI XML): The Great Scott, a massive and extremely useful lexicon. (The smaller "Middle Liddell" is also available from Perseus.)
+  - [Perseus Lexica](https://github.com/PerseusDL/lexica) (TEI XML): The Great Scott, a massive and extremely useful lexicon. The version currently used on Perseus, converted to Unicode, can be found [in Giuseppe Celano's repository](https://github.com/gcelano/LSJ_GreekUnicode). (The smaller "Middle Liddell" is also available from Perseus.)
 - *Mounce Lexicon*
   - [Mounce](https://github.com/billmounce/dictionary) (JSON): Mounce's Concise Greek-English Dictionary of Biblical Greek.
 - *Strong's Dictionary*
