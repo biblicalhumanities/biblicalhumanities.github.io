@@ -33,6 +33,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [biblicalhumanities](https://github.com/biblicalhumanities/Nestle1904) (CSV):  Nestle 1904, tagged using MorphGNT conventions.
 - *SBLGNT Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/sblgnt) (Plain text in columns):  SBLGNT, done by MorphGNT, the first initiative to produce truly open high quality morphologies for the Greek New Testament.
+- *Westcott-Hort*
+  - [Westcott-Hort](http://scrolltag.com/westcott_and_hort.html): Westcott-Hort, as edited by Joshua Grauman.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
 - *Rahlf's Septuagint*  
