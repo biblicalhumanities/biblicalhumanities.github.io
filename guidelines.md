@@ -9,6 +9,8 @@ Our mission is to grow an open data ecosystem for digital biblical studies. To s
 - Human readable formats like XML, JSON, or well structured HTML with metadata.
 - Unicode, using NFC normalization and UTF-8 when feasible.
 - Publicly available in source code repositories, so changes are visible and available, and it is easy to track issues and suggest improvements or corrections.
+- Easily identifiable. Always tell people how to cite your work, e.g. 
+  Tauber, J. Ed. MorphGNT: SBLGNT Edition. Version 6.09. https://github.com/morphgnt/sblgnt DOI:XX.XXXX/XXXXXXX.
 - Designed to be used collaboratively with other resources.
 - Uses existing standards like TEI, Epidoc, and OSIS when they are a good match for the domain.
 
