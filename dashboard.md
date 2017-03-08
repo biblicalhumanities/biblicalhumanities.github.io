@@ -59,6 +59,10 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Hebrew Old Testament*
   - [Shebanq](https://shebanq.ancient-data.org/sources) (SQL): Hebrew Old Testament, SQL database data.
 
+### Discourse Analysis
+
+- *Levinsohn's Greek New Testament Discourse Features*
+  - [Levinsohn](https://github.com/biblicalhumanities/levinsohn): Stephen Levinsohn's complete discourse features markup of the Greek New Testament (UBS4/NA27). Released by SIL International and Paul O’Rear, and recognized as the [2016 Dataset of the Year](http://biblicalhumanities.org/2017/01/27/BH2016-award.html).
 
 ### Lexicons
 
@@ -81,7 +85,7 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Greek Paradigms*
   - [Masternarde](http://ucbclassics.dreamhosters.com/ancgreek/AGTdownload.zip) (HTML, PDF): Ancient Greek Tutorials, by Donald J. Mastronarde with the assistance of the Berkeley Language Center of the University of California, Berkeley. ©1999-2005 The Regents of the University of California. Copyright prevents free distribution, but this can be useful for producing resources.
 - *Gesenius' Hebrew Grammar*
-  - [Gesenius] (https://en.wikisource.org/wiki/Gesenius'_Hebrew_Grammar): An old classic reference grammar.
+  - [Gesenius](https://en.wikisource.org/wiki/Gesenius'_Hebrew_Grammar): An old classic reference grammar.
 
 ### Commentaries, Secondary Literature, and Other Resources
 
