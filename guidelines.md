@@ -17,6 +17,6 @@ Our mission is to grow an open data ecosystem for digital biblical studies. To s
 
 You can help build the community of open data for scholarly study by adding the following statement to your README:
 
-- For other freely licensed, high quality digital resources for scholarly study of Greek and Hebrew Scriptures, see the [Biblical Humanities Dashboard](http://biblicalhumanities.org/dashboard/).
+- For other freely licensed, high quality digital resources for scholarly study of Greek and Hebrew Scriptures, see the [Biblical Humanities Dashboard](http://biblicalhumanities.org/dashboard/) (http://biblicalhumanities.org/dashboard/).
 
 We are now beginning to negotiate standards to improve interoperability among resources.  Check out [https://github.com/biblicalhumanities/standards](https://github.com/biblicalhumanities/standards), and come talk to us on [https://biblicalhumanities.slack.com/messages/standards/](https://biblicalhumanities.slack.com/messages/standards/).
