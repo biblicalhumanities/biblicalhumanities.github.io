@@ -16,7 +16,7 @@ others who are working on similar things to maximize interoperability and minimi
 In addition, we sponsor two online forums for discussing biblical languages:
 
 - [The B-Greek Forum](http://www.ibiblio.org/bgreek/forum/)
-- [The B-Hebrew Forum](http://biblicalhumanities.org/bhebrew/)
+- [The B-Hebrew Forum](http://bhebrew.biblicalhumanities.org)
 
 ## Who is biblicalhumanities.org?
 
