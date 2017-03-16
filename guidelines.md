@@ -6,7 +6,7 @@ permalink: /guidelines/
 Our mission is to grow an open data ecosystem for digital biblical studies. To support this mission, we promote these guidelines:
 
 - Freely licensed. For content that is not code, we like [Creative Commons Licenses](http://creativecommons.org/choose/).  For code, we like MIT, Apache, and GPL -see [http://choosealicense.com](http://choosealicense.com/).  We encourage licenses that require attribution, we dislike licenses that require asking permission - that just doesn't scale.
-- Ethical.  Always read and observe licenses from other content providers, tracking down the person who actually owns the copyright.  Always cite original sources, even if they are now in the public domain.  Do not fork an upstream resource unless you are doing something substantially different - help the developer of the upstream resource instead.
+- Ethical.  Always read and observe licenses from other content providers, tracking down the person who actually owns the copyright.  Always cite original sources, even if they are now in the public domain.  Do not fork an upstream resource unless you are doing something substantially different - help the developer of the upstream resource instead.  Don't use a resource to create a resource with a more restrictive license.
 - Human readable formats like XML, JSON, or well structured HTML with metadata.
 - Unicode, using NFC normalization and UTF-8 when feasible.
 - Publicly available in source code repositories, so changes are visible and available, and it is easy to track issues and suggest improvements or corrections.
