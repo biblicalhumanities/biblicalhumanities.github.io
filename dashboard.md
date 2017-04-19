@@ -77,7 +77,7 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Mounce Lexicon*
   - [Mounce](https://github.com/billmounce/dictionary) (JSON): Mounce's Concise Greek-English Dictionary of Biblical Greek.
 - *Strong's Dictionary*
-  - [MorphGNT](https://github.com/morphgnt/strongs-dictionary-xml) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference.
+  - [OpenScriptures](https://github.com/openscriptures/strongs) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference. Greek and Hebrew.
 - *Hebrew Lexicon*
   - [Shebanq](https://shebanq.ancient-data.org/sources) (XML): A Hebrew lexicon from the Shebanq project.
 
