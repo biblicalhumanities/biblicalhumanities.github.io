@@ -1,0 +1,42 @@
+---
+layout: post
+title:  "GERT Sessions at SBL 2017"
+date:   2017-10-24 08:33:50
+categories: 
+---
+
+Coming to [SBL 2017](https://www.sbl-site.org/meetings/meetings_registrationAM.aspx) in Boston?  GERT and [biblicalhumanities.org](biblicalhumanities.org) are sponsoring three sessions: (1) Best Practices in Online Teaching, (2) Open Collaborative Annotation Workshop, (3) Open Session. See the detailed schedule below.
+
+# Best Practices in Online Teaching
+**Time**: Saturday, November 18th, 9:00 - 11:30 AM<br/>
+**Room**: Republic B (Second Level) - Sheraton Boston Hotel<br/>
+**Presiding**: Renate Viveen Hood, University of Mary Hardin-Baylor
+
+- [The Online Capstone: Collaborative Learning and Research in a Virtual Environment](https://www.sbl-site.org/meetings/abstract.aspx?id=42579) - Sandie Gravett, Appalachian State University
+- [Using the Moodle Book module to create and deliver an interactive online Biblical Hebrew course and textbook](https://www.sbl-site.org/meetings/abstract.aspx?id=44204) - Barry Bandstra, Hope College
+- [Wandering in the Online Wilderness - From Classroom to Online and Back Again - Some Observations](https://www.sbl-site.org/meetings/abstract.aspx?id=42838) - Jonathan D. Lawrence, Canisius College  
+- [The Corpus-driven Online Hebrew Classroom](https://www.sbl-site.org/meetings/abstract.aspx?id=44229) - Nicolai Winther-Nielsen, Fjellhaug Internasjonale Høgskole  
+- [Going Deep and Beyond the Expectations of a Term Paper: Student Contributions to the Website Bible in Its Traditions](https://www.sbl-site.org/meetings/abstract.aspx?id=44352) - Jean-Francois Racine, Jesuit School of Theology of Santa Clara University
+  
+
+# Open Collaborative Annotation Workshop
+**Time**: Saturday, November 18th, 1:00 to 3:30 PM<br/>
+**Room**: 312 (Third Level) - Hynes Convention Center (HCC) <br/>
+**Presiding**: Randall Tan, Global Bible Initiative
+
+Please bring your own web-enabled devices (laptops, tablets, smartphones) if you wish to participate in hands-on exploration.
+
+- [Close Reading of Biblical Texts and Treebanks with genius.com, hypothes.is and pund.it](https://www.sbl-site.org/meetings/abstract.aspx?id=44538) - Jonathan Robie, biblicalhumanities.org
+- [Semantic Annotation with Plokamos and the Perseids Project](https://www.sbl-site.org/meetings/abstract.aspx?id=44648) - Bridget Almas, Perseus Digital Library, Tufts University and Marie-Claire Beaulieu, Perseus Digital Library, Tufts University
+- [Exploring Web-Based Methods for Syntactic Annotation](https://www.sbl-site.org/meetings/abstract.aspx?id=44105) - Christopher D. Land, McMaster Divinity College and Francis G.H. Pang, McMaster Divinity College
+
+# Open Session
+**Time**: Sunday, November 19th, 9:00 to 11:30 AM<br/>
+**Room**: Exeter (Third Level) - Boston Marriott Copley Place (MCP)<br/>
+**Presiding**: Nicolai Winther-Nielsen, Fjellhaug Internasjonale Høgskole
+
+- [Computational alignment of Greek and Hebrew with Bible translations, using Swahili as a proof of concept](https://www.sbl-site.org/meetings/abstract.aspx?id=44231) - David Instone-Brewer, Tyndale House (Cambridge)
+- [Paratext 8, ETCBC, and Lexical Semantics](https://www.sbl-site.org/meetings/abstract.aspx?id=44611) - Reinier de Blois, United Bible Societies
+- [Linking Lexical Resources for Biblical Greek](https://www.sbl-site.org/meetings/abstract.aspx?id=44385) - James Tauber, MorphGNT
+- [Visualizing the Meanings of Biblical Words by Context](https://www.sbl-site.org/meetings/abstract.aspx?id=43190) - Jeremy Thompson, Logos Bible Software
+- [How the BibleOL can take over your Hebrew examinations and student grading](https://www.sbl-site.org/meetings/abstract.aspx?id=44114) - Oliver Glanz, Andrews University
