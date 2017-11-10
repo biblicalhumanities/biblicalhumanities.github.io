@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "Open Data Lunch at SBL 2017"
+date:   2017-11-10 08:33:50
+categories: 
+---
+
+Every year [biblicalhumanities.org](biblicalhumanities.org) and  The Global Education and Research Technology (GERT) section of SBL hold a get-together for people who are producing open datasets or open source software.  This includes researchers and people creating software to be used by others.  The goal is to learn from each other and help grow the open data community.
+
+We will meet on Sunday, November 19th, 11:45 AM at the Exeter (Third Level) room, Boston Marriott Copley Place (MCP) and move to a different location from there.  We will spend an hour sharing informally about what each of us is doing, bottlenecks we are hitting, resources we are creating, and brainstorming about what we would like to see happen in our community over the coming year.
+
+Questions?  Ask [Jonathan](mailto:jonathan.robie@gmail.com).
