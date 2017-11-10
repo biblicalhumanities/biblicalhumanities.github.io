@@ -7,7 +7,7 @@ categories:
 
 Every year [biblicalhumanities.org](biblicalhumanities.org) and  The Global Education and Research Technology (GERT) section of SBL hold a get-together for people who are producing open datasets or open source software.  This includes researchers and people creating software to be used by others.  The goal is to learn from each other and help grow the open data community.
 
-See the [biblicahumanities.org dashboard](http://biblicalhumanities.org/dashboard/) for an overview of some of the open data resources available for biblical languages.
+See the [biblicahumanities.org dashboard](http://biblicalhumanities.org/dashboard/) for an overview of some of the open data resources available for biblical languages.  Come join us and be part of this community.
 
 We will meet on Sunday, November 19th, 11:45 AM at the Exeter (Third Level) room, Boston Marriott Copley Place (MCP) and move to a different location from there.  We will spend an hour sharing informally about what each of us is doing, bottlenecks we are hitting, resources we are creating, and brainstorming about what we would like to see happen in our community over the coming year.
 
