@@ -10,3 +10,6 @@ github_username:  biblicalhumanities
 
 # Build settings
 markdown: kramdown
+
+layout: default
+comments: true
