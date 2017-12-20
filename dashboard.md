@@ -3,7 +3,7 @@ layout: page
 title: Dashboard
 permalink: /dashboard/
 ---
-This dashboard primarily lists data resources that are centrally important for digital biblical humanities and available now. Unless otherwise stated, they provide their data under open licenses. There are multiple versions of some of these resources, we attempt to point to the best authoritative source.  For Greek resources, [Perseus](https://github.com/PerseusDL/tei-conversion-tools/wiki) is well worth consulting as well.
+This dashboard primarily lists data resources that are centrally important for digital biblical humanities and available now. Unless otherwise stated, they provide their data under open licenses. There are multiple versions of some of these resources, we attempt to point to the best authoritative source.  For Greek resources, [Perseus](https://opengreekandlatin.github.io/First1KGreek/) is well worth consulting as well.
 
 If you believe a resource should be added to this page, please contact us (see the bottom of any page on this site for contact information).
 
@@ -29,6 +29,8 @@ If you believe a resource should be added to this page, please contact us (see t
 
 ### Morphologically Tagged Texts
 
+In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.github.io/First1KGreek/) for morphologically tagged texts.
+
 - *Nestle 1904 Greek New Testament*
   - [biblicalhumanities](https://github.com/biblicalhumanities/Nestle1904) (CSV):  Nestle 1904, tagged using MorphGNT conventions.
 - *SBLGNT Greek New Testament*
@@ -37,7 +39,7 @@ If you believe a resource should be added to this page, please contact us (see t
   - [Westcott-Hort](http://scrolltag.com/westcott_and_hort.html): Westcott-Hort, as edited by Joshua Grauman.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
-- *Rahlf's Septuagint*  
+- *Rahlf's Septuagint*
   - [CCAT LXX](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not freely licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt) and [this user agreement](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-user-declaration.txt).
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
 - *Swete's Septuagint*
@@ -53,9 +55,9 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Nestle 1904 Greek New Testament*
    - [Global Bible Initiative](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/nestle1904) (XML): High quality treebank using HPSG constituent grammar.
    - [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/nestle1904-lowfat) (XML): Lowfat trees transformed from GBI trees to make them easier to query. XML text.
-- *SBLGNT Greek New Testament* 
+- *SBLGNT Greek New Testament*
    - [Global Bible Initiative](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt) (XML): High quality treebank using HPSG constituent grammar.
-   - [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat) (XML): Lowfat trees transformed from GBI trees to make them easier to query. 
+   - [Lowfat](https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt-lowfat) (XML): Lowfat trees transformed from GBI trees to make them easier to query.
 - *Tischendorff Greek New Testament*
    - [PROIEL](https://github.com/proiel/proiel-treebank) (XML): High quality dependency trees in an eclectic and expressive format. Part of a parallel corpus of old Indo-European Bible translations, including Greek, Armenian, Gothic, Old Church Slavonic, and Latin.
 - *Hebrew Old Testament*
