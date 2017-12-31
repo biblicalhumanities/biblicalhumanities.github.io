@@ -11,7 +11,7 @@ If you believe a resource should be added to this page, please contact us (see t
 ### Base texts
 
 - *Nestle 1904 Greek New Testament*
-  - [Diego Santos](https://sites.google.com/site/nestle1904/faq) (.odt, .pdf): Text of the Nestle 1904 Greek New Testament. Used in morphologically tagged texts and treebanks listed below. Not under source code control.
+  - [Diego Santos](https://sites.google.com/site/nestle1904/faq) (.odt, .pdf): Text of the Nestle 1904 Greek New Testament. Used in morphologically tagged texts and treebanks listed below. This text is also available in a cleaner XML in the [Nestle1904](https://github.com/biblicalhumanities/Nestle1904) repository.
 - *SBL Greek New Testament*
   - [SBLGNT](http://sblgnt.com/) (XML, OSIS, text, several other formats): High quality critical text created by Logos Software and the Society of Biblical Literature. Note the [license](http://sblgnt.com/license/), which imposes conditions on downstream works that use it.
 - *Greek New Testament - Byzantine Text*
