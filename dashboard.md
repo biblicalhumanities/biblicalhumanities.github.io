@@ -16,6 +16,8 @@ If you believe a resource should be added to this page, please contact us (see t
   - [SBLGNT](http://sblgnt.com/) (XML, OSIS, text, several other formats): High quality critical text created by Logos Software and the Society of Biblical Literature. Note the [license](http://sblgnt.com/license/), which imposes conditions on downstream works that use it.
 - *Greek New Testament - Byzantine Text*
   - [byztxt.com](http://www.byztxt.com/downloads.html): Robinson-Pierpoint Byzantine text, a Majority Text.
+- *Bunning Heuristic Prototype (BHP)*
+  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).
 - *Codex Sinaiticus*
   - [Codex Sinaiticus](http://www.codexsinaiticus.org/en/): Codex Sinaiticus, presented on an impressive website that offers [downloads](http://www.codexsinaiticus.org/en/project/transcription_download.aspx) of their XML data.
 - *Swete's Septuagint*
@@ -26,6 +28,12 @@ If you believe a resource should be added to this page, please contact us (see t
   - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/catenae-dev) (XML): For each verse, lists any comments that the early Fathers made on that verse.
 - *Sefaria*
   - [Sefaria](https://github.com/Sefaria/Sefaria-Export) (JSON): A wonderful collection of Jewish texts containing Tanakh, Commentaries (Rashi, Ibn Ezra, etc.), Midrash, Targums, Talmud, Kabbalah, a lexicon, and a Hebrew grammar.
+
+### Textual Variants and Conjectural Emendations
+
+- *CNTR Transcriptions*
+  - [Center for New Testament Restoration](https://greekcntr.org/resources.htm) transcriptions of all textual variants before AD 400, done by Alan Bunning.  Also available as a web resource at this page: [Manuscripts](https://greekcntr.org/manuscripts.htm).
+
 
 ### Morphologically Tagged Texts
 
@@ -39,6 +47,8 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
   - [Westcott-Hort](http://scrolltag.com/westcott_and_hort.html): Westcott-Hort, as edited by Joshua Grauman.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
+- *Bunning Heuristic Prototype (BHP)*
+  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).  
 - *Rahlf's Septuagint*
   - [CCAT LXX](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not freely licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt) and [this user agreement](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-user-declaration.txt).
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
