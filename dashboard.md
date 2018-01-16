@@ -32,7 +32,9 @@ If you believe a resource should be added to this page, please contact us (see t
 ### Textual Variants and Conjectural Emendations
 
 - *CNTR Transcriptions*
-  - [Center for New Testament Restoration](https://greekcntr.org/resources.htm) transcriptions of all textual variants before AD 400, done by Alan Bunning.  Also available as a web resource at this page: [Manuscripts](https://greekcntr.org/manuscripts.htm).
+  - [Center for New Testament Restoration](https://greekcntr.org/resources.htm) transcriptions of all textual variants before AD 400, done by Alan Bunning.  Also available as a web page: [Manuscripts](https://greekcntr.org/manuscripts.htm).
+- *Amsterdam Database of New Testament Conjectural Emendation* 
+  - [The Amsterdam Database of New Testament Conjectural Emendation](http://ntvmr.uni-muenster.de/nt-conjectures-attribution), data available [here](http://ntvmr.uni-muenster.de/community/vmr/api/projects/ntconjectures/admin/sql/scripts/).  Also available as a web page [here](http://ntvmr.uni-muenster.de/nt-conjectures).
 
 
 ### Morphologically Tagged Texts
@@ -48,7 +50,7 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
 - *Bunning Heuristic Prototype (BHP)*
-  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).  
+  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).
 - *Rahlf's Septuagint*
   - [CCAT LXX](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not freely licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt) and [this user agreement](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-user-declaration.txt).
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
