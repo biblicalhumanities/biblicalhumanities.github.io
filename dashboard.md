@@ -21,7 +21,7 @@ If you believe a resource should be added to this page, please contact us (see t
 - *Codex Sinaiticus*
   - [Codex Sinaiticus](https://www.codexsinaiticus.org/en/): Codex Sinaiticus, presented on an impressive website that offers [downloads](https://codexsinaiticus.org/en/project/transcription_download.aspx) of their XML data.
 - *Swete's Septuagint*
-  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/septuagint-dev) Machine-corrected version of Swetes Septuagint.
+  - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/First1KGreek/tree/master/data/tlg0527) Machine-corrected version of Swete's Septuagint.
 - *Migne's Patrologia Graeca*
   - [OpenGreekAndLatin](https://github.com/OGL-PatrologiaGraecaDev)  Massive collection of Church Fathers. See description on [Wikipedia](https://en.wikipedia.org/wiki/Patrologia_Graeca).
 - *Cramer's Catenae*
