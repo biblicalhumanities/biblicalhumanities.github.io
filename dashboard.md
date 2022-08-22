@@ -15,11 +15,11 @@ If you believe a resource should be added to this page, please contact us (see t
 - *SBL Greek New Testament*
   - [SBLGNT](http://sblgnt.com/) (XML, OSIS, text, several other formats): High quality critical text created by Logos Software and the Society of Biblical Literature. Note the [license](http://sblgnt.com/license/), which imposes conditions on downstream works that use it.
 - *Greek New Testament - Byzantine Text*
-  - [byztxt.com](http://www.byztxt.com/downloads.html): Robinson-Pierpoint Byzantine text, a Majority Text.
+  - [ByzantineText.com](https://byzantinetext.com/study/editions/): Robinson-Pierpoint Byzantine text, a Majority Text (and other Greek texts).
 - *Bunning Heuristic Prototype (BHP)*
-  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).
+  - [Bunning Heuristic Prototype](https://greekcntr.org/resources/), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/resources/BHP_Introduction.pdf). [BHP data available at CNTR website](https://greekcntr.org/resources/BHP_Data.txt) or on [GitHub](https://github.com/greekcntr/BHP).
 - *Codex Sinaiticus*
-  - [Codex Sinaiticus](http://www.codexsinaiticus.org/en/): Codex Sinaiticus, presented on an impressive website that offers [downloads](http://www.codexsinaiticus.org/en/project/transcription_download.aspx) of their XML data.
+  - [Codex Sinaiticus](https://www.codexsinaiticus.org/en/): Codex Sinaiticus, presented on an impressive website that offers [downloads](https://codexsinaiticus.org/en/project/transcription_download.aspx) of their XML data.
 - *Swete's Septuagint*
   - [OpenGreekAndLatin](https://github.com/OpenGreekAndLatin/septuagint-dev) Machine-corrected version of Swetes Septuagint.
 - *Migne's Patrologia Graeca*
@@ -32,7 +32,7 @@ If you believe a resource should be added to this page, please contact us (see t
 ### Textual Variants and Conjectural Emendations
 
 - *CNTR Transcriptions*
-  - [Center for New Testament Restoration](https://greekcntr.org/resources.htm) transcriptions of all textual variants before AD 400, done by Alan Bunning.  Also available as a web page: [Manuscripts](https://greekcntr.org/manuscripts.htm).
+  - [Center for New Testament Restoration](https://greekcntr.org/resources/) transcriptions of all textual variants before AD 400, done by Alan Bunning.  Also available as a web page: [Manuscripts](https://greekcntr.org/manuscripts/).
 - *Amsterdam Database of New Testament Conjectural Emendation* 
   - [The Amsterdam Database of New Testament Conjectural Emendation](http://ntvmr.uni-muenster.de/nt-conjectures-attribution), data available [here](http://ntvmr.uni-muenster.de/community/vmr/api/projects/ntconjectures/admin/sql/scripts/).  Also available as a web page [here](http://ntvmr.uni-muenster.de/nt-conjectures).
 
@@ -50,7 +50,7 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 - *Tischendorff Greek New Testament*
   - [MorphGNT](https://github.com/morphgnt/tischendorf) (Plain text in columns): Tischendorff, done by MorphGNT.
 - *Bunning Heuristic Prototype (BHP)*
-  - [Bunning Heuristic Prototype](https://greekcntr.org/resources.htm), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/downloads/BHP_Introduction.pdf).
+  - [Bunning Heuristic Prototype](https://greekcntr.org/resources/), generated from early manuscripts algorithmically.  See [this documentation](https://greekcntr.org/resources/BHP_Introduction.pdf). [BHP data available at CNTR website](https://greekcntr.org/resources/BHP_Data.txt) or on [GitHub](https://github.com/greekcntr/BHP).
 - *Rahlf's Septuagint*
   - [CCAT LXX](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/) (Plain text in columns). Not freely licensed, see [this license](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-readme.txt) and [this user agreement](http://ccat.sas.upenn.edu/gopher/text/religion/biblical/lxxmorph/0-user-declaration.txt).
   - [Unbound Bible](http://unbound.biola.edu/).  Downloadable texts in a variety of formats, including Unicode and morphology.
@@ -59,7 +59,7 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 - *Coptic Scriptorium*
   - [Coptic Scriptorium](http://data.copticscriptorium.org/) (XML): Coptic corpus with morphology and phrasing. Freely licensed, data available on Github.
 - *Hebrew Old Testament*
-  - [Shebanq](https://shebanq.ancient-data.org/sources) (SQL): Hebrew Old Testament, SQL database data.
+  - [Shebanq](https://shebanq.ancient-data.org) (SQL): Hebrew Old Testament, SQL database data.
 
 
 ### Treebanks
@@ -73,7 +73,7 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 - *Tischendorff Greek New Testament*
    - [PROIEL](https://github.com/proiel/proiel-treebank) (XML): High quality dependency trees in an eclectic and expressive format. Part of a parallel corpus of old Indo-European Bible translations, including Greek, Armenian, Gothic, Old Church Slavonic, and Latin.
 - *Hebrew Old Testament*
-  - [Shebanq](https://shebanq.ancient-data.org/sources) (SQL): Hebrew Old Testament, SQL database data.
+  - [Shebanq](https://shebanq.ancient-data.org) (SQL): Hebrew Old Testament, SQL database data.
 
 ### Discourse Analysis
 
@@ -89,11 +89,11 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 - *Liddell-Scott-Jones*
   - [Perseus Lexica](https://github.com/PerseusDL/lexica) (TEI XML): The Great Scott, a massive and extremely useful lexicon. The version currently used on Perseus, converted to Unicode, can be found [in Giuseppe Celano's repository](https://github.com/gcelano/LSJ_GreekUnicode). (The smaller "Middle Liddell" is also available from Perseus.)
 - *Mounce Lexicon*
-  - [Mounce](https://github.com/billmounce/dictionary) (JSON): Mounce's Concise Greek-English Dictionary of Biblical Greek.
+  - [Mounce (copy)](https://github.com/jcuenod/dictionary) (JSON): Mounce's Concise Greek-English Dictionary of Biblical Greek ([original repo](https://github.com/billmounce/dictionary) no longer extant).
 - *Strong's Dictionary*
   - [OpenScriptures](https://github.com/openscriptures/strongs) (XML): One of the most commonly used lexicons, keyed to Strong's Numbers for easy cross reference. Greek and Hebrew.
 - *Hebrew Lexicon*
-  - [Shebanq](https://shebanq.ancient-data.org/sources) (XML): A Hebrew lexicon from the Shebanq project.
+  - [Shebanq](https://shebanq.ancient-data.org) (XML): A Hebrew lexicon from the Shebanq project.
 
 ### Grammars and Paradigms
 - *Greek Syntax*
@@ -106,7 +106,7 @@ In addition to texts mentioned below, check [Perseus](https://opengreekandlatin.
 ### Commentaries, Secondary Literature, and Other Resources
 
 - *Lace*
-  - [Lace](http://heml.mta.ca/lace/catalog)(hOCR): Contains a massive number of Greek texts in hOCR format, including several scholarly commentaries on the Greek text of each New Testament book, Septuagint resources, Cramer's Catenae, Migne, the Sophocles lexicon, and many other resources that are just begging for the community to adopt and do manual editing.
+  - [Lace](http://heml.mta.ca/lace/index.html)(hOCR): Contains a massive number of Greek texts in hOCR format, including several scholarly commentaries on the Greek text of each New Testament book, Septuagint resources, Cramer's Catenae, Migne, the Sophocles lexicon, and many other resources that are just begging for the community to adopt and do manual editing.
 - *Bible Support*
   - [Bible Support](http://www.biblesupport.com/e-sword-downloads/) (e-Sword modules): Contains some very useful [commentaries](http://www.biblesupport.com/e-sword-downloads/category/3-commentaries/)
   and [dictionaries](http://www.biblesupport.com/e-sword-downloads/category/7-dictionaries/).
